@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 {choseOneOne, choseOneTwo, choseTwoOne, choseTwoTwo, choseThrowaway};
 
         for (ImageView imDice : imDices) {
-            imDice.setTag("released");
+            imDice.setTag((int)0);
         }
 
         roll.setOnClickListener(this);
@@ -92,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case Chosen:
                 cleanChoices();
+                addChosenDicesSum();
                 rollDicesNow();
                 currentState = rollState.Rolled;
                 break;
@@ -103,18 +104,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
     public void rollDicesNow(){
+        int randDice = 0;
         // removing selection of dices
         for (ImageView imDice : imDices) {
-            imDice.setImageResource(dices[(int) random.nextInt(6)]);
+            randDice = random.nextInt(6);
+            imDice.setImageResource(dices[randDice]);
             imDice.setBackground(getResources().getDrawable(R.color.white));
-            imDice.setTag("released");
+            imDice.setTag(randDice + 1);
         }
     }
     public void cleanChoices(){
         Button roll = findViewById(R.id.rollDices);
         // removing selection of choices
         for (ImageView imChosenDice : imChosenDices) {
-            imChosenDice.setTag("NotChosen");
+            imChosenDice.setTag((int)0);
             imChosenDice.setImageResource(android.R.drawable.gallery_thumb);
         }
         chosenDices = 0;
@@ -123,43 +126,46 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     public void selectDice(ImageView dice){
-        if(dice.getTag() == "released")
+        int diceTag = (Integer)dice.getTag();
+        if(diceTag < 9)
         {
             dice.setBackground(getResources().getDrawable(R.color.gray_5));
-            dice.setTag("pressed");
+            dice.setTag(diceTag + 10);
             // diceFive.setBackground(getResources().getDrawable(android.R.drawable.gallery_thumb))
-            choseDice(dice.getDrawable());
+            choseDice(dice.getDrawable(), diceTag);
         }
         else
         {
-            dice.setTag("released");
+            dice.setTag(diceTag - 10);
             dice.setBackground(getResources().getDrawable(R.color.white));
-            removeDice(dice.getDrawable());
+            removeDice(dice.getDrawable(), diceTag);
         }
         addChosenDicesSum();
     }
-    public void choseDice(Drawable diceImage){
+    public void choseDice(Drawable diceImage, int diceNum){
         for (ImageView imChosenDice : imChosenDices) {
-            if (imChosenDice.getTag() != "Chosen") {
+            if ((Integer)imChosenDice.getTag() == 0) {
                 imChosenDice.setImageDrawable(diceImage);
-                imChosenDice.setTag("Chosen");
+                imChosenDice.setTag(diceNum);
                 chosenDices++;
                 setEnableRoll();
                 break;
             }
         }
     }
-    public void removeDice(Drawable diceImage){
+    public void removeDice(Drawable diceImage, int diceNum){
         for (ImageView imChosenDice : imChosenDices) {
             if (imChosenDice.getDrawable() == diceImage) {
                 imChosenDice.setImageResource(android.R.drawable.gallery_thumb);
-                imChosenDice.setTag("NotChosen");
+                imChosenDice.setTag(0);
                 chosenDices--;
                 setEnableRoll();
                 break;
             }
         }
     }
+
+
     public void setEnableRoll(){
         Button roll = findViewById(R.id.rollDices);
         if (chosenDices == imChosenDices.length){
@@ -173,19 +179,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    @SuppressLint("UseCompatLoadingForDrawables")
-    public int getDiceValue(Drawable diceId){
-        int value = 0;
-        for(int dice : dices){
-            value ++;
-
-            if ( getResources().getDrawable(dice) == diceId) {
-                break;
-            }
-        }
-
-        return value;
-    }
     public void addChosenDicesSum(){
         int numOne = 0;
         int numTwo = 0;
@@ -194,8 +187,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         TextView choseTwo = findViewById(R.id.textChoseTwo);
 
         for(int i=0; i < imChosenDices.length - 1; i++){
-            if(imChosenDices[i].getTag() == "Chosen") {
-                int diceValue = getDiceValue(imChosenDices[i].getDrawable());
+            if((Integer)imChosenDices[i].getTag() != 0) {
+                int diceValue = (Integer)imChosenDices[i].getTag();
                 if (i == 1 || i == 0) {
                     numOne = numOne + diceValue;
                 } else if (i == 2 || i == 3) {
