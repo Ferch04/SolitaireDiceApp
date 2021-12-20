@@ -1,0 +1,2 @@
+rootProject.name = "SolitaireDice"
+include ':app'
