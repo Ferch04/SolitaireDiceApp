@@ -19,10 +19,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     int chosenDices = 0;
     int[] dices = {R.drawable.dice1, R.drawable.dice2, R.drawable.dice3,  R.drawable.dice4,
             R.drawable.dice5, R.drawable.dice6 };
+
+    int[] chosen;
     ImageView[] imDices ;
     ImageView[] imChosenDices;
+    TextView[] txtChosen;
+    TextView[] txtNumbers;
+    Scoring scoring;
 
     enum rollState{
+        // todo: new state called start game
         Idle,
         Rolled,
         Chosen,
@@ -47,11 +53,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         final ImageView choseTwoOne = findViewById(R.id.numTwoOne);
         final ImageView choseTwoTwo = findViewById(R.id.numTwoTwo);
         final ImageView choseThrowaway = findViewById(R.id.numThrowaway);
-        // endregion
 
+        final TextView numberTwo = findViewById(R.id.textNumberTwo);
+        final TextView numberThree = findViewById(R.id.textNumberThree);
+        final TextView numberFour = findViewById(R.id.textNumberFour);
+        final TextView numberFive = findViewById(R.id.textNumberFive);
+        final TextView numberSix = findViewById(R.id.textNumberSix);
+        final TextView numberSeven = findViewById(R.id.textNumberSeven);
+        final TextView numberEight = findViewById(R.id.textNumberEight);
+        final TextView numberNine = findViewById(R.id.textNumberNine);
+        final TextView numberTen = findViewById(R.id.textNumberTen);
+        final TextView numberEleven = findViewById(R.id.textNumberEleven);
+        final TextView numberTwelve = findViewById(R.id.textNumberTwelve);
+
+        final TextView choseOne = findViewById(R.id.textChoseOne);
+        final TextView choseTwo = findViewById(R.id.textChoseTwo);
+
+        // endregion
+        chosen = new int[] {0, 0};
+        txtChosen = new TextView[] {choseOne, choseTwo};
+        txtNumbers = new TextView[] {numberTwo, numberThree, numberFour, numberFive, numberSix,
+                numberSeven, numberEight, numberNine, numberTen, numberEleven, numberTwelve};
         imDices = new ImageView[] {diceOne, diceTwo, diceThree, diceFour, diceFive};
         imChosenDices = new ImageView[]
                 {choseOneOne, choseOneTwo, choseTwoOne, choseTwoTwo, choseThrowaway};
+        scoring = new Scoring();
+        scoring.NewScore();
 
         for (ImageView imDice : imDices) {
             imDice.setTag((int)0);
@@ -91,6 +118,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 currentState = rollState.Rolled;
                 break;
             case Chosen:
+                fillNumbers();
                 cleanChoices();
                 addChosenDicesSum();
                 rollDicesNow();
@@ -102,6 +130,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             default:
                 break;
         }
+    }
+    public void fillNumbers(){
+        scoring.AddNewNumber(chosen[0]);
+        scoring.AddNewNumber(chosen[1]);
+
+        txtNumbers[chosen[0] - 2].setText(String.valueOf(
+                scoring.GetCount(chosen[0])));
+        txtNumbers[chosen[1] - 2].setText(String.valueOf(
+                scoring.GetCount(chosen[1])));
     }
     public void rollDicesNow(){
         int randDice = 0;
@@ -178,13 +215,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-
     public void addChosenDicesSum(){
         int numOne = 0;
         int numTwo = 0;
-
-        TextView choseOne = findViewById(R.id.textChoseOne);
-        TextView choseTwo = findViewById(R.id.textChoseTwo);
 
         for(int i=0; i < imChosenDices.length - 1; i++){
             if((Integer)imChosenDices[i].getTag() != 0) {
@@ -196,8 +229,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         }
-        choseOne.setText(String.valueOf(numOne));
-        choseTwo.setText(String.valueOf(numTwo));
+        txtChosen[0].setText(String.valueOf(numOne));
+        txtChosen[1].setText(String.valueOf(numTwo));
+
+        chosen[0] = numOne;
+        chosen[1] = numTwo;
+
     }
 
 }

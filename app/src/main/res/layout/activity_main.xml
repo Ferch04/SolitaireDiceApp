@@ -443,13 +443,23 @@
                 android:textColor="@color/black" />
 
             <TextView
+                android:id="@+id/textNumberThree"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:layout_weight="1"
+                android:text="0"
+                android:textColor="@color/black" />
+
+            <TextView
                 android:id="@+id/textNumberFour"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
                 android:layout_weight="1"
-                android:text="8"
+                android:text="0"
                 android:textColor="@color/black" />
 
             <TextView
@@ -469,7 +479,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
                 android:layout_weight="1"
-                android:text="2"
+                android:text="0"
                 android:textColor="@color/black" />
 
             <TextView
@@ -479,7 +489,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
                 android:layout_weight="1"
-                android:text="5"
+                android:text="0"
                 android:textColor="@color/black" />
 
             <TextView
@@ -499,7 +509,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
                 android:layout_weight="1"
-                android:text="IIIII IIII"
+                android:text="0"
                 android:textColor="@color/black" />
 
             <TextView
@@ -519,7 +529,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
                 android:layout_weight="1"
-                android:text="1"
+                android:text="0"
                 android:textColor="@color/black" />
 
             <TextView
@@ -527,19 +537,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:layout_weight="1"
-                android:text="III"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:id="@+id/textNumberThree"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
                 android:layout_marginBottom="53dp"
                 android:layout_weight="1"
-                android:text="VII"
+                android:text="0"
                 android:textColor="@color/black" />
 
         </LinearLayout>
