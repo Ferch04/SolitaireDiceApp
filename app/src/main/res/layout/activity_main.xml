@@ -417,7 +417,7 @@
                 android:visibility="visible" />
 
             <TextView
-                android:id="@+id/textView18"
+                android:id="@+id/textTotalScore"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -557,7 +557,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="Throw Away 1"
-                android:textColor="@color/black"
+                android:textColor="@color/gray_7"
                 android:textSize="16sp" />
 
             <TextView
@@ -566,7 +566,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="Throw Away 2"
-                android:textColor="@color/black"
+                android:textColor="@color/gray_7"
                 android:textSize="16sp" />
 
             <TextView
@@ -575,7 +575,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="Throw Away 3"
-                android:textColor="@color/black"
+                android:textColor="@color/gray_7"
                 android:textSize="16sp" />
         </LinearLayout>
     </LinearLayout>

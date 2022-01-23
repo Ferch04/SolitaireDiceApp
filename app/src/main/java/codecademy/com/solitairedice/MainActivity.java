@@ -139,6 +139,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 scoring.GetCount(chosen[0])));
         txtNumbers[chosen[1] - 2].setText(String.valueOf(
                 scoring.GetCount(chosen[1])));
+
+        TextView totalScore = findViewById(R.id.textTotalScore);
+        totalScore.setText(new StringBuilder().append("Total : ").append(scoring.TotalScore()).toString());
     }
     public void rollDicesNow(){
         int randDice = 0;
