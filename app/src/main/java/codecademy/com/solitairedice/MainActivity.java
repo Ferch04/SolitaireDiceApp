@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ImageView[] imChosenDices;
     TextView[] txtChosen;
     TextView[] txtNumbers;
+    TextView[] txtThrows;
     Scoring scoring;
 
     enum rollState{
@@ -69,11 +70,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         final TextView choseOne = findViewById(R.id.textChoseOne);
         final TextView choseTwo = findViewById(R.id.textChoseTwo);
 
+        final TextView throwOne = findViewById(R.id.textThrowAwOne);
+        final TextView throwTwo = findViewById(R.id.textThrowAwTwo);
+        final TextView throwThree = findViewById(R.id.textThrowAwThree);
         // endregion
         chosen = new int[] {0, 0};
         txtChosen = new TextView[] {choseOne, choseTwo};
         txtNumbers = new TextView[] {numberTwo, numberThree, numberFour, numberFive, numberSix,
                 numberSeven, numberEight, numberNine, numberTen, numberEleven, numberTwelve};
+        txtThrows = new TextView[] {throwOne, throwTwo, throwThree};
         imDices = new ImageView[] {diceOne, diceTwo, diceThree, diceFour, diceFive};
         imChosenDices = new ImageView[]
                 {choseOneOne, choseOneTwo, choseTwoOne, choseTwoTwo, choseThrowaway};
@@ -141,7 +146,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 scoring.GetCount(chosen[1])));
 
         TextView totalScore = findViewById(R.id.textTotalScore);
-        totalScore.setText(new StringBuilder().append("Total : ").append(scoring.TotalScore()).toString());
+        totalScore.setText("Total : " + scoring.TotalScore());
+
+        // todo: change 4 to throw away and validate throw away before accepting a new throw
+        scoring.AddThrowAway((Integer)imChosenDices[4].getTag());
+        txtThrows[0].setText(scoring.GetThrowAway((Integer)imChosenDices[4].getTag()));
     }
     public void rollDicesNow(){
         int randDice = 0;

@@ -552,7 +552,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView14"
+                android:id="@+id/textThrowAwOne"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -561,7 +561,7 @@
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/textView15"
+                android:id="@+id/textThrowAwTwo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -570,7 +570,7 @@
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/textView17"
+                android:id="@+id/textThrowAwThree"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"

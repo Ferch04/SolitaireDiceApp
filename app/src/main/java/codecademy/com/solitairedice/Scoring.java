@@ -1,8 +1,11 @@
 package codecademy.com.solitairedice;
 
+import android.util.Log;
+
 import java.util.Dictionary;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Objects;
 
 public class Scoring {
     private class Score {
@@ -41,6 +44,7 @@ public class Scoring {
     };
 
     Dictionary<Integer, Score> dicScore  = new Hashtable<Integer, Score>();
+    Hashtable<Integer, String> hashThrowAway = new Hashtable<Integer, String>();
     ScoreState state;
 
     public void NewScore(){
@@ -77,6 +81,31 @@ public class Scoring {
     }
     public int GetCount(int num){
         return (dicScore.get(num)).Count;
+    }
+    public boolean AddThrowAway(int num){
+        boolean added = true;
+
+        if(hashThrowAway.size() < 3){
+            if(hashThrowAway.containsKey(num)) {
+                hashThrowAway.put(num, hashThrowAway.get(num).concat("I"));
+
+            } else {
+                hashThrowAway.put(num, ("(" + num).concat("): I"));
+            }
+        }
+        else if (hashThrowAway.size() == 3){
+            if(hashThrowAway.containsKey(num)) {
+                hashThrowAway.put(num, hashThrowAway.get(num).concat("I"));
+            } else {
+                added = false;
+            }
+        }
+        DefineState();
+
+        return added;
+    }
+    public String GetThrowAway(int num){
+        return hashThrowAway.get(num);
     }
 
     private void DefineState(){
