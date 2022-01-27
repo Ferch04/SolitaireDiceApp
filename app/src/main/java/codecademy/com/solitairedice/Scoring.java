@@ -82,6 +82,9 @@ public class Scoring {
     public int GetCount(int num){
         return (dicScore.get(num)).Count;
     }
+    public boolean IsThrowAway(int num){
+        return hashThrowAway.containsKey(num);
+    }
     public boolean AddThrowAway(int num){
         boolean added = true;
 
@@ -111,13 +114,16 @@ public class Scoring {
     private void DefineState(){
         switch (state){
             case Starting:
-                // todo
+                if(hashThrowAway.size() == 0){
+                    state = ScoreState.ChoosingThrowAway;
+                }
                 break;
             case ChoosingThrowAway:
-                state = state;
+                if(hashThrowAway.size() == 3){
+                    state = ScoreState.ThreeThrowAway;
+                }
                 break;
             case ThreeThrowAway:
-                break;
             case Finish:
             default:
                 break;

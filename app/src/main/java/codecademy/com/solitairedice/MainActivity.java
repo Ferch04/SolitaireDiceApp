@@ -1,8 +1,10 @@
 package codecademy.com.solitairedice;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 import android.view.View;
@@ -88,6 +90,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         for (ImageView imDice : imDices) {
             imDice.setTag((int)0);
         }
+        for(TextView txThrow : txtThrows){
+            txThrow.setTag((int)0);
+        }
 
         roll.setOnClickListener(this);
         diceOne.setOnClickListener(this);
@@ -123,11 +128,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 currentState = rollState.Rolled;
                 break;
             case Chosen:
-                fillNumbers();
-                cleanChoices();
-                addChosenDicesSum();
-                rollDicesNow();
-                currentState = rollState.Rolled;
+                if(fillNumbers()){
+                    cleanChoices();
+                    addChosenDicesSum();
+                    rollDicesNow();
+                    currentState = rollState.Rolled;
+                }
                 break;
             case Rolled: // do nothing and wait for all dices to be chosen
                 break;
@@ -136,21 +142,65 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
     }
-    public void fillNumbers(){
-        scoring.AddNewNumber(chosen[0]);
-        scoring.AddNewNumber(chosen[1]);
+    public boolean ValidateThrowAway(int throwAway){
 
-        txtNumbers[chosen[0] - 2].setText(String.valueOf(
-                scoring.GetCount(chosen[0])));
-        txtNumbers[chosen[1] - 2].setText(String.valueOf(
-                scoring.GetCount(chosen[1])));
+        boolean isValid = scoring.AddThrowAway(throwAway);
 
-        TextView totalScore = findViewById(R.id.textTotalScore);
-        totalScore.setText("Total : " + scoring.TotalScore());
+        return isValid;
+    }
+    public boolean fillNumbers() {
 
-        // todo: change 4 to throw away and validate throw away before accepting a new throw
-        scoring.AddThrowAway((Integer)imChosenDices[4].getTag());
-        txtThrows[0].setText(scoring.GetThrowAway((Integer)imChosenDices[4].getTag()));
+        int throwAway = (Integer) imChosenDices[4].getTag();
+        boolean isValid = ValidateThrowAway(throwAway);
+
+        if (isValid) {
+            scoring.AddNewNumber(chosen[0]);
+            scoring.AddNewNumber(chosen[1]);
+
+            txtNumbers[chosen[0] - 2].setText(String.valueOf(
+                    scoring.GetCount(chosen[0])));
+            txtNumbers[chosen[1] - 2].setText(String.valueOf(
+                    scoring.GetCount(chosen[1])));
+
+            TextView totalScore = findViewById(R.id.textTotalScore);
+            totalScore.setText("Total : " + scoring.TotalScore());
+
+            FillThrowAway((Integer) imChosenDices[4].getTag());
+        } else
+        {
+            AlertDialog alert = new AlertDialog.Builder(MainActivity.this).create();
+            alert.setMessage("Invalid throw away, please select a valid one");
+            alert.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            alert.show();
+        }
+
+        return isValid;
+    }
+    public void FillThrowAway(int num){
+
+        for(TextView throwA: txtThrows){
+            int tag = (Integer)throwA.getTag();
+
+            if( tag == num){
+                throwA.setText(scoring.GetThrowAway(num));
+                break;
+            }else if( tag == 0){
+                throwA.setTag(num);
+                throwA.setText(scoring.GetThrowAway(num));
+                break;
+            }
+        }
+    }
+    public void IsFreeThrow(){
+        if(scoring.state == Scoring.ScoreState.ThreeThrowAway){
+
+        }
     }
     public void rollDicesNow(){
         int randDice = 0;
@@ -161,6 +211,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             imDice.setBackground(getResources().getDrawable(R.color.white));
             imDice.setTag(randDice + 1);
         }
+        IsFreeThrow();
     }
     public void cleanChoices(){
         Button roll = findViewById(R.id.rollDices);
