@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.widget.ImageView;
 import android.view.View;
 import android.widget.Button;
@@ -13,16 +14,20 @@ import android.widget.Button;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     Random random = new Random();
+    boolean freeThrow = false;
     int chosenDices = 0;
     int[] dices = {R.drawable.dice1, R.drawable.dice2, R.drawable.dice3,  R.drawable.dice4,
             R.drawable.dice5, R.drawable.dice6 };
 
     int[] chosen;
+    List<Integer> iDices;
     ImageView[] imDices ;
     ImageView[] imChosenDices;
     TextView[] txtChosen;
@@ -86,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 {choseOneOne, choseOneTwo, choseTwoOne, choseTwoTwo, choseThrowaway};
         scoring = new Scoring();
         scoring.NewScore();
+        iDices = new ArrayList<Integer>();
 
         for (ImageView imDice : imDices) {
             imDice.setTag((int)0);
@@ -131,8 +137,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if(fillNumbers()){
                     cleanChoices();
                     addChosenDicesSum();
-                    rollDicesNow();
-                    currentState = rollState.Rolled;
+                    if (scoring.state != Scoring.ScoreState.Finish){
+                        rollDicesNow();
+                        currentState = rollState.Rolled;
+                    }
+                    else{
+                        EndGame();
+                    }
                 }
                 break;
             case Rolled: // do nothing and wait for all dices to be chosen
@@ -142,17 +153,43 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
     }
+    public void ShowMessage(String message){
+        AlertDialog alert = new AlertDialog.Builder(MainActivity.this).create();
+        alert.setMessage(message);
+        alert.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        alert.show();
+    }
+    public void EndGame(){
+        Button roll = findViewById(R.id.rollDices);
+        roll.setEnabled(false);
+        ShowMessage("End of Game" +
+                "Score: " + scoring.TotalScore());
+    }
     public boolean ValidateThrowAway(int throwAway){
 
-        boolean isValid = scoring.AddThrowAway(throwAway);
+        boolean isValid = true;
+
+        if(freeThrow){
+            freeThrow = false;
+        } else{
+            isValid = scoring.AddThrowAway(throwAway);
+        }
 
         return isValid;
     }
+    @SuppressLint("UseCompatLoadingForDrawables")
     public boolean fillNumbers() {
 
         int throwAway = (Integer) imChosenDices[4].getTag();
         boolean isValid = ValidateThrowAway(throwAway);
 
+        // Check if throw away is valid
         if (isValid) {
             scoring.AddNewNumber(chosen[0]);
             scoring.AddNewNumber(chosen[1]);
@@ -162,22 +199,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             txtNumbers[chosen[1] - 2].setText(String.valueOf(
                     scoring.GetCount(chosen[1])));
 
+            txtNumbers[chosen[0] - 2].setTextColor(getResources().getColor(R.color.black));
+            txtNumbers[chosen[1] - 2].setTextColor(getResources().getColor(R.color.black));
+
             TextView totalScore = findViewById(R.id.textTotalScore);
             totalScore.setText("Total : " + scoring.TotalScore());
 
             FillThrowAway((Integer) imChosenDices[4].getTag());
         } else
         {
-            AlertDialog alert = new AlertDialog.Builder(MainActivity.this).create();
-            alert.setMessage("Invalid throw away, please select a valid one");
-            alert.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-            alert.show();
+            ShowMessage("Invalid throw away," +
+                    " please select a valid one");
         }
 
         return isValid;
@@ -198,8 +230,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
     public void IsFreeThrow(){
-        if(scoring.state == Scoring.ScoreState.ThreeThrowAway){
+        boolean throwFounded = false;
 
+        Log.d("fercho", "state " + scoring.state);
+        if(scoring.state == Scoring.ScoreState.ThreeThrowAway){
+            for(int dice : iDices){
+                throwFounded |= scoring.IsThrowAway(dice);
+            }
+            // if at lease on throw away its founded
+            // free throw should be false, otherwise it will be true
+            if(!throwFounded) {
+                freeThrow = true;
+                Log.d("fercho", "free throw");
+                // todo: show that its a free throw
+            }
         }
     }
     public void rollDicesNow(){
@@ -207,6 +251,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // removing selection of dices
         for (ImageView imDice : imDices) {
             randDice = random.nextInt(6);
+            iDices.add(randDice + 1);
+
             imDice.setImageResource(dices[randDice]);
             imDice.setBackground(getResources().getDrawable(R.color.white));
             imDice.setTag(randDice + 1);
@@ -220,6 +266,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             imChosenDice.setTag((int)0);
             imChosenDice.setImageResource(android.R.drawable.gallery_thumb);
         }
+        iDices.clear();
         chosenDices = 0;
         roll.setEnabled(false);
     }

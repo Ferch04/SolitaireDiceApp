@@ -73,11 +73,20 @@ public class Scoring {
 
         return String.valueOf(total);
     }
-    public void AddNewNumber(int num){
-        if( 2 <= num && num <= 12 ) {
-            Score auxScore = dicScore.get(num);
-            auxScore.PlusOne();
+
+    private int GetNumOfThrowAway(String text){
+        char charI = 'I';
+        int count = 0;
+
+        for(int i = 0; i < text.length(); i++ ){
+            if (text.charAt(i) == charI){
+                count++;
+            }
         }
+        return count;
+    }
+    public String GetThrowAway(int num){
+        return hashThrowAway.get(num);
     }
     public int GetCount(int num){
         return (dicScore.get(num)).Count;
@@ -107,14 +116,17 @@ public class Scoring {
 
         return added;
     }
-    public String GetThrowAway(int num){
-        return hashThrowAway.get(num);
+    public void AddNewNumber(int num){
+        if( 2 <= num && num <= 12 ) {
+            Score auxScore = dicScore.get(num);
+            auxScore.PlusOne();
+        }
     }
 
     private void DefineState(){
         switch (state){
             case Starting:
-                if(hashThrowAway.size() == 0){
+                if(hashThrowAway.size() > 0){
                     state = ScoreState.ChoosingThrowAway;
                 }
                 break;
@@ -124,6 +136,13 @@ public class Scoring {
                 }
                 break;
             case ThreeThrowAway:
+                for(String txt : hashThrowAway.values()){
+                    if(8 == GetNumOfThrowAway(txt)){
+                        state = ScoreState.Finish;
+                        break;
+                    }
+                }
+                break;
             case Finish:
             default:
                 break;
