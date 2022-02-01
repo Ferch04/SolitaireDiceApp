@@ -1,11 +1,7 @@
 package codecademy.com.solitairedice;
 
-import android.util.Log;
-
-import java.util.Dictionary;
 import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.Objects;
 
 public class Scoring {
     private class Score {
@@ -43,35 +39,39 @@ public class Scoring {
         Finish
     };
 
-    Dictionary<Integer, Score> dicScore  = new Hashtable<Integer, Score>();
+    Hashtable<Integer, Score> hasScore = new Hashtable<Integer, Score>();
     Hashtable<Integer, String> hashThrowAway = new Hashtable<Integer, String>();
     ScoreState state;
 
     public void NewScore(){
         state = ScoreState.Starting;
 
-        dicScore.put( 2, new Score(2, 100));
-        dicScore.put( 3, new Score(3, 70));
-        dicScore.put( 4, new Score(4, 60));
-        dicScore.put( 5, new Score(5, 50));
-        dicScore.put( 6, new Score(6, 40));
-        dicScore.put( 7, new Score(7, 30));
-        dicScore.put( 8, new Score(8, 40));
-        dicScore.put( 9, new Score(9, 50));
-        dicScore.put( 10, new Score(10, 60));
-        dicScore.put( 11, new Score(11, 70));
-        dicScore.put( 12, new Score(12, 100));
+        hasScore.put( 2, new Score(2, 100));
+        hasScore.put( 3, new Score(3, 70));
+        hasScore.put( 4, new Score(4, 60));
+        hasScore.put( 5, new Score(5, 50));
+        hasScore.put( 6, new Score(6, 40));
+        hasScore.put( 7, new Score(7, 30));
+        hasScore.put( 8, new Score(8, 40));
+        hasScore.put( 9, new Score(9, 50));
+        hasScore.put( 10, new Score(10, 60));
+        hasScore.put( 11, new Score(11, 70));
+        hasScore.put( 12, new Score(12, 100));
     }
     public String TotalScore(){
         int total = 0;
 
-        Enumeration keys = dicScore.keys();
+        Enumeration keys = hasScore.keys();
 
         while(keys.hasMoreElements()){
-            total += dicScore.get(keys.nextElement()).Sum;
+            total += hasScore.get(keys.nextElement()).Sum;
         }
 
         return String.valueOf(total);
+    }
+    public void ClearScore(){
+        hashThrowAway.clear();
+        hasScore.clear();
     }
 
     private int GetNumOfThrowAway(String text){
@@ -89,7 +89,7 @@ public class Scoring {
         return hashThrowAway.get(num);
     }
     public int GetCount(int num){
-        return (dicScore.get(num)).Count;
+        return (hasScore.get(num)).Count;
     }
     public boolean IsThrowAway(int num){
         return hashThrowAway.containsKey(num);
@@ -118,7 +118,7 @@ public class Scoring {
     }
     public void AddNewNumber(int num){
         if( 2 <= num && num <= 12 ) {
-            Score auxScore = dicScore.get(num);
+            Score auxScore = hasScore.get(num);
             auxScore.PlusOne();
         }
     }

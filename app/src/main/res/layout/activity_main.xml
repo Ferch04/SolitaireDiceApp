@@ -193,9 +193,9 @@
         android:layout_marginRight="24dp"
         android:layout_marginBottom="16dp"
         android:text="Start"
-        android:textColor="@color/black"
+        android:textColor="@color/white_1"
         android:textColorHint="@color/teal_200"
-        app:backgroundTint="@android:color/darker_gray"
+        app:backgroundTint="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -269,7 +269,7 @@
 
         <LinearLayout
             android:id="@+id/LayoutText"
-            android:layout_width="93dp"
+            android:layout_width="111dp"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
@@ -283,7 +283,7 @@
                 android:layout_marginBottom="4dp"
                 android:text="  2 (100): "
                 android:textColor="@color/gray_7"
-                android:textSize="16sp"
+                android:textSize="20sp"
                 android:visibility="visible" />
 
             <TextView
@@ -296,7 +296,7 @@
                 android:layout_marginBottom="4dp"
                 android:text="  3 ( 70 ):"
                 android:textColor="@color/gray_7"
-                android:textSize="16sp"
+                android:textSize="20sp"
                 android:visibility="visible" />
 
             <TextView
@@ -309,7 +309,7 @@
                 android:layout_marginBottom="4dp"
                 android:text="  4 ( 60 ):"
                 android:textColor="@color/gray_7"
-                android:textSize="16sp"
+                android:textSize="20sp"
                 android:visibility="visible" />
 
             <TextView
@@ -322,7 +322,7 @@
                 android:layout_marginBottom="4dp"
                 android:text="  5 ( 50 ):"
                 android:textColor="@color/gray_7"
-                android:textSize="16sp"
+                android:textSize="20sp"
                 android:visibility="visible" />
 
             <TextView
@@ -335,7 +335,7 @@
                 android:layout_marginBottom="4dp"
                 android:text="  6 ( 40 ): "
                 android:textColor="@color/gray_7"
-                android:textSize="16sp"
+                android:textSize="20sp"
                 android:visibility="visible" />
 
             <TextView
@@ -348,7 +348,7 @@
                 android:layout_marginBottom="4dp"
                 android:text="  7 ( 30 ):"
                 android:textColor="@color/gray_7"
-                android:textSize="16sp"
+                android:textSize="20sp"
                 android:visibility="visible" />
 
             <TextView
@@ -361,7 +361,7 @@
                 android:layout_marginBottom="4dp"
                 android:text="  8 ( 40 ):"
                 android:textColor="@color/gray_7"
-                android:textSize="16sp"
+                android:textSize="20sp"
                 android:visibility="visible" />
 
             <TextView
@@ -374,7 +374,7 @@
                 android:layout_marginBottom="4dp"
                 android:text="  9 ( 50 ):"
                 android:textColor="@color/gray_7"
-                android:textSize="16sp"
+                android:textSize="20sp"
                 android:visibility="visible" />
 
             <TextView
@@ -387,7 +387,7 @@
                 android:layout_marginBottom="4dp"
                 android:text="10 ( 60 ): "
                 android:textColor="@color/gray_7"
-                android:textSize="16sp"
+                android:textSize="20sp"
                 android:visibility="visible" />
 
             <TextView
@@ -400,7 +400,7 @@
                 android:layout_marginBottom="4dp"
                 android:text="11 ( 70 ):"
                 android:textColor="@color/gray_7"
-                android:textSize="16sp"
+                android:textSize="20sp"
                 android:visibility="visible" />
 
             <TextView
@@ -410,25 +410,15 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="4dp"
-                android:layout_marginBottom="32dp"
                 android:text="12 (100):"
                 android:textColor="@color/gray_7"
-                android:textSize="16sp"
+                android:textSize="20sp"
                 android:visibility="visible" />
 
-            <TextView
-                android:id="@+id/textTotalScore"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:text="Total:"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="134dp"
+            android:layout_width="90dp"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
@@ -438,10 +428,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
-                android:layout_weight="1"
                 android:text="0"
                 android:textColor="@color/gray_99"
-                android:textSize="16sp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/textNumberThree"
@@ -449,10 +438,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
-                android:layout_weight="1"
                 android:text="0"
                 android:textColor="@color/gray_99"
-                android:textSize="16sp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/textNumberFour"
@@ -460,10 +448,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
-                android:layout_weight="1"
                 android:text="0"
                 android:textColor="@color/gray_99"
-                android:textSize="16sp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/textNumberFive"
@@ -471,10 +458,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
-                android:layout_weight="1"
                 android:text="0"
                 android:textColor="@color/gray_99"
-                android:textSize="16sp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/textNumberSix"
@@ -482,10 +468,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
-                android:layout_weight="1"
                 android:text="0"
                 android:textColor="@color/gray_99"
-                android:textSize="16sp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/textNumberSeven"
@@ -493,10 +478,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
-                android:layout_weight="1"
                 android:text="0"
                 android:textColor="@color/gray_99"
-                android:textSize="16sp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/textNumberEight"
@@ -504,10 +488,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
-                android:layout_weight="1"
                 android:text="0"
                 android:textColor="@color/gray_99"
-                android:textSize="16sp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/textNumberNine"
@@ -515,10 +498,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
-                android:layout_weight="1"
                 android:text="0"
                 android:textColor="@color/gray_99"
-                android:textSize="16sp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/textNumberTen"
@@ -526,10 +508,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
-                android:layout_weight="1"
                 android:text="0"
                 android:textColor="@color/gray_99"
-                android:textSize="16sp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/textNumberEleven"
@@ -537,29 +518,25 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
-                android:layout_weight="1"
                 android:text="0"
                 android:textColor="@color/gray_99"
-                android:textSize="16sp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/textNumberTwelve"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:layout_marginBottom="53dp"
-                android:layout_weight="1"
                 android:text="0"
                 android:textColor="@color/gray_99"
-                android:textSize="16sp" />
+                android:textSize="20sp" />
 
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/LayoutThrows"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="253dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <TextView
@@ -569,7 +546,7 @@
                 android:layout_marginTop="4dp"
                 android:text="Throw Away 1"
                 android:textColor="@color/gray_7"
-                android:textSize="16sp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/textThrowAwTwo"
@@ -578,17 +555,37 @@
                 android:layout_marginTop="4dp"
                 android:text="Throw Away 2"
                 android:textColor="@color/gray_7"
-                android:textSize="16sp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/textThrowAwThree"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
+                android:layout_marginBottom="50dp"
                 android:text="Throw Away 3"
                 android:textColor="@color/gray_7"
-                android:textSize="16sp" />
+                android:textSize="20sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="242dp"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="0dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textTotalScore"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    android:text="Total:"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
         </LinearLayout>
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

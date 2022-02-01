@@ -153,6 +153,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
     }
+    public void RollDiceStatus(boolean state){
+        Button roll = findViewById(R.id.rollDices);
+        roll.setEnabled(state);
+
+        if(state){
+            roll.setBackgroundColor(getResources().getColor(R.color.black_1));
+        } else {
+            roll.setBackgroundColor(getResources().getColor(R.color.gray_99));
+        }
+    }
     public void ShowMessage(String message){
         AlertDialog alert = new AlertDialog.Builder(MainActivity.this).create();
         alert.setMessage(message);
@@ -166,8 +176,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         alert.show();
     }
     public void EndGame(){
-        Button roll = findViewById(R.id.rollDices);
-        roll.setEnabled(false);
+        RollDiceStatus(false);
         ShowMessage("End of Game" +
                 "Score: " + scoring.TotalScore());
     }
@@ -225,6 +234,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }else if( tag == 0){
                 throwA.setTag(num);
                 throwA.setText(scoring.GetThrowAway(num));
+                throwA.setTextColor(getResources().getColor(R.color.black));
                 break;
             }
         }
@@ -260,7 +270,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         IsFreeThrow();
     }
     public void cleanChoices(){
-        Button roll = findViewById(R.id.rollDices);
         // removing selection of choices
         for (ImageView imChosenDice : imChosenDices) {
             imChosenDice.setTag((int)0);
@@ -268,7 +277,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         iDices.clear();
         chosenDices = 0;
-        roll.setEnabled(false);
+        RollDiceStatus(false);
     }
 
 
@@ -314,13 +323,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     public void setEnableRoll(){
-        Button roll = findViewById(R.id.rollDices);
         if (chosenDices == imChosenDices.length){
-            roll.setEnabled(true);
+            RollDiceStatus(true);
             currentState = rollState.Chosen;
         }
         else{
-            roll.setEnabled(false);
+            RollDiceStatus(false);
             currentState = rollState.Rolled;
         }
     }
