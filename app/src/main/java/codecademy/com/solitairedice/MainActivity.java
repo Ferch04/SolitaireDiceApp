@@ -125,12 +125,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     @SuppressLint("SetTextI18n")
     public void rollDicesMain(){
-        Button roll = findViewById(R.id.rollDices);
+
         switch (currentState){
             case Idle:
                 cleanChoices();
                 rollDicesNow();
-                roll.setText("Select & roll");
+                RollDiceText("Select & roll");
                 currentState = rollState.Rolled;
                 break;
             case Chosen:
@@ -149,9 +149,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case Rolled: // do nothing and wait for all dices to be chosen
                 break;
             case EndGame:
+                CleanScoring();
+                CleanThrowAway();
+                scoring.NewScore();
+                chosenDices = 0;
+                freeThrow = false;
+                TotalScore("Total: ");
+                currentState = rollState.Idle;
             default:
                 break;
         }
+    }
+    public void RollDiceText(String text){
+        Button roll = findViewById(R.id.rollDices);
+        roll.setText(text);
     }
     public void RollDiceStatus(boolean state){
         Button roll = findViewById(R.id.rollDices);
@@ -162,6 +173,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             roll.setBackgroundColor(getResources().getColor(R.color.gray_99));
         }
+    }
+    public void TotalScore(String score){
+        TextView totalScore = findViewById(R.id.textTotalScore);
+        totalScore.setText(score);
     }
     public void ShowMessage(String message){
         AlertDialog alert = new AlertDialog.Builder(MainActivity.this).create();
@@ -176,9 +191,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         alert.show();
     }
     public void EndGame(){
-        RollDiceStatus(false);
+        cleanChoices();
+        cleanDices();
         ShowMessage("End of Game" +
-                "Score: " + scoring.TotalScore());
+                "\nScore: " + scoring.TotalScore());
+        RollDiceText("Start");
+        RollDiceStatus(true);
+        currentState = rollState.EndGame;
     }
     public boolean ValidateThrowAway(int throwAway){
 
@@ -211,14 +230,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             txtNumbers[chosen[0] - 2].setTextColor(getResources().getColor(R.color.black));
             txtNumbers[chosen[1] - 2].setTextColor(getResources().getColor(R.color.black));
 
-            TextView totalScore = findViewById(R.id.textTotalScore);
-            totalScore.setText("Total : " + scoring.TotalScore());
+            TotalScore("Total : " + scoring.TotalScore());
 
             FillThrowAway((Integer) imChosenDices[4].getTag());
         } else
         {
             ShowMessage("Invalid throw away," +
-                    " please select a valid one");
+                    "\nplease select a valid one");
         }
 
         return isValid;
@@ -268,6 +286,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             imDice.setTag(randDice + 1);
         }
         IsFreeThrow();
+    }
+    public void CleanScoring(){
+        for (TextView score : txtNumbers){
+            score.setText("0");
+            score.setTextColor(getResources().getColor(R.color.gray_99));
+        }
+    }
+    public void CleanThrowAway(){
+        int i = 1;
+        for(TextView t_away : txtThrows){
+            t_away.setTextColor(getResources().getColor(R.color.gray_99));
+            t_away.setText("Throw Away " + i);
+            t_away.setTag((int)0);
+            i++;
+        }
+    }
+    public void cleanDices(){
+        for (ImageView imDice : imDices) {
+            imDice.setImageResource(android.R.drawable.gallery_thumb);
+            imDice.setBackground(getResources().getDrawable(R.color.white));
+            imDice.setTag((int)0);
+        }
     }
     public void cleanChoices(){
         // removing selection of choices

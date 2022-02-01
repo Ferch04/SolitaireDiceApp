@@ -44,6 +44,7 @@ public class Scoring {
     ScoreState state;
 
     public void NewScore(){
+        ClearScore();
         state = ScoreState.Starting;
 
         hasScore.put( 2, new Score(2, 100));
@@ -69,7 +70,7 @@ public class Scoring {
 
         return String.valueOf(total);
     }
-    public void ClearScore(){
+    private void ClearScore(){
         hashThrowAway.clear();
         hasScore.clear();
     }
@@ -100,6 +101,9 @@ public class Scoring {
         if(hashThrowAway.size() < 3){
             if(hashThrowAway.containsKey(num)) {
                 hashThrowAway.put(num, hashThrowAway.get(num).concat("I"));
+                    if(GetNumOfThrowAway(hashThrowAway.get(num)) == 8 ){
+                        state = ScoreState.Finish;
+                    }
 
             } else {
                 hashThrowAway.put(num, ("(" + num).concat("): I"));
