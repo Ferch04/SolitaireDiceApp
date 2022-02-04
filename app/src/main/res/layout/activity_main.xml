@@ -6,12 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    android:padding="3dp"
     tools:context=".MainActivity">
 
     <LinearLayout
         android:id="@+id/LayoutThrowaway"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="34dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginBottom="16dp"
@@ -23,7 +24,7 @@
             android:id="@+id/textThrowaway"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_marginTop="4dp"
             android:layout_weight="1"
             android:shadowColor="#453F3F"
             android:text="Throwaway: "
@@ -34,9 +35,11 @@
         <ImageView
             android:id="@+id/numThrowaway"
             android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_margin="8dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="9dp"
+            android:layout_marginLeft="9dp"
             android:layout_weight="1"
+            android:padding="3dp"
             android:tag="0"
             app:srcCompat="@android:drawable/gallery_thumb" />
 
@@ -45,9 +48,10 @@
     <LinearLayout
         android:id="@+id/LayoutNumberTwo"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="34dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
+        android:layout_marginBottom="4dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/LayoutThrowaway"
         app:layout_constraintStart_toStartOf="parent">
@@ -56,7 +60,7 @@
             android:id="@+id/textNumTwo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_marginTop="4dp"
             android:layout_weight="1"
             android:shadowColor="#453F3F"
             android:text="Number 2: "
@@ -67,24 +71,26 @@
         <ImageView
             android:id="@+id/numTwoOne"
             android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="5dp"
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
             android:layout_weight="1"
+            android:padding="3dp"
             android:tag="0"
             app:srcCompat="@android:drawable/gallery_thumb" />
 
         <ImageView
             android:id="@+id/numTwoTwo"
             android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_margin="5dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginRight="2dp"
             android:layout_weight="1"
+            android:padding="3dp"
             android:tag="0"
             app:srcCompat="@android:drawable/gallery_thumb" />
 
@@ -94,7 +100,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:layout_weight="1"
             android:text="0"
             android:textColor="@color/black" />
@@ -104,7 +110,7 @@
         android:id="@+id/LayoutRolledDices"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="10dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/LayoutNumberOne"
         app:layout_constraintEnd_toEndOf="parent"
@@ -119,7 +125,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:background="@color/white"
-            android:clickable="true"
+            android:clickable="false"
             android:cropToPadding="true"
             android:longClickable="false"
             android:padding="3dp"
@@ -135,7 +141,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:background="@color/white"
-            android:clickable="true"
+            android:clickable="false"
             android:cropToPadding="true"
             android:padding="3dp"
             app:srcCompat="@android:drawable/gallery_thumb" />
@@ -149,7 +155,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:background="@color/white"
-            android:clickable="true"
+            android:clickable="false"
             android:cropToPadding="true"
             android:padding="3dp"
             app:srcCompat="@android:drawable/gallery_thumb" />
@@ -163,7 +169,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:background="@color/white"
-            android:clickable="true"
+            android:clickable="false"
             android:cropToPadding="true"
             android:padding="3dp"
             app:srcCompat="@android:drawable/gallery_thumb" />
@@ -178,7 +184,7 @@
             android:layout_marginRight="8dp"
             android:adjustViewBounds="false"
             android:background="@color/white"
-            android:clickable="true"
+            android:clickable="false"
             android:longClickable="false"
             android:padding="3dp"
             app:srcCompat="@android:drawable/gallery_thumb" />
@@ -189,8 +195,8 @@
         android:id="@+id/rollDices"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
         android:text="Start"
         android:textColor="@color/white_1"
@@ -202,9 +208,10 @@
     <LinearLayout
         android:id="@+id/LayoutNumberOne"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="34dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
+        android:layout_marginBottom="4dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/LayoutNumberTwo"
         app:layout_constraintStart_toStartOf="parent">
@@ -213,7 +220,7 @@
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_marginTop="4dp"
             android:layout_weight="1"
             android:shadowColor="#453F3F"
             android:text="Number 1: "
@@ -224,22 +231,26 @@
         <ImageView
             android:id="@+id/numOneOne"
             android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="5dp"
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
             android:layout_weight="1"
-            app:srcCompat="@android:drawable/gallery_thumb"
-            android:tag="0" />
+            android:adjustViewBounds="false"
+            android:padding="3dp"
+            android:tag="0"
+            app:srcCompat="@android:drawable/gallery_thumb" />
 
         <ImageView
             android:id="@+id/numOneTwo"
             android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginRight="2dp"
+            android:padding="3dp"
             android:tag="0"
             app:srcCompat="@android:drawable/gallery_thumb" />
 
@@ -249,7 +260,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:layout_weight="1"
             android:text="0"
             android:textColor="@color/black"
@@ -282,7 +293,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
                 android:text="  2 (100): "
-                android:textColor="@color/gray_7"
+                android:textColor="@color/gray_5"
                 android:textSize="20sp"
                 android:visibility="visible" />
 
@@ -295,7 +306,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
                 android:text="  3 ( 70 ):"
-                android:textColor="@color/gray_7"
+                android:textColor="@color/gray_5"
                 android:textSize="20sp"
                 android:visibility="visible" />
 
@@ -308,7 +319,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
                 android:text="  4 ( 60 ):"
-                android:textColor="@color/gray_7"
+                android:textColor="@color/gray_5"
                 android:textSize="20sp"
                 android:visibility="visible" />
 
@@ -321,7 +332,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
                 android:text="  5 ( 50 ):"
-                android:textColor="@color/gray_7"
+                android:textColor="@color/gray_5"
                 android:textSize="20sp"
                 android:visibility="visible" />
 
@@ -334,7 +345,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
                 android:text="  6 ( 40 ): "
-                android:textColor="@color/gray_7"
+                android:textColor="@color/gray_5"
                 android:textSize="20sp"
                 android:visibility="visible" />
 
@@ -347,7 +358,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
                 android:text="  7 ( 30 ):"
-                android:textColor="@color/gray_7"
+                android:textColor="@color/gray_5"
                 android:textSize="20sp"
                 android:visibility="visible" />
 
@@ -360,7 +371,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
                 android:text="  8 ( 40 ):"
-                android:textColor="@color/gray_7"
+                android:textColor="@color/gray_5"
                 android:textSize="20sp"
                 android:visibility="visible" />
 
@@ -373,7 +384,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
                 android:text="  9 ( 50 ):"
-                android:textColor="@color/gray_7"
+                android:textColor="@color/gray_5"
                 android:textSize="20sp"
                 android:visibility="visible" />
 
@@ -386,7 +397,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
                 android:text="10 ( 60 ): "
-                android:textColor="@color/gray_7"
+                android:textColor="@color/gray_5"
                 android:textSize="20sp"
                 android:visibility="visible" />
 
@@ -399,7 +410,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
                 android:text="11 ( 70 ):"
-                android:textColor="@color/gray_7"
+                android:textColor="@color/gray_5"
                 android:textSize="20sp"
                 android:visibility="visible" />
 
@@ -411,7 +422,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="4dp"
                 android:text="12 (100):"
-                android:textColor="@color/gray_7"
+                android:textColor="@color/gray_5"
                 android:textSize="20sp"
                 android:visibility="visible" />
 

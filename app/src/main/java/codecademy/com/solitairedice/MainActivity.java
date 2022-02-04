@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
+import android.text.Html;
 import android.util.Log;
 import android.widget.ImageView;
 import android.view.View;
@@ -36,13 +38,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Scoring scoring;
 
     enum rollState{
-        // todo: new state called start game
+        Starting,// todo: new state called start game
         Idle,
         Rolled,
         Chosen,
         EndGame
     }
-    rollState currentState = rollState.Idle;
+    rollState currentState = rollState.Starting;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,10 +129,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void rollDicesMain(){
 
         switch (currentState){
+            case Starting:
+                CleanScoring();
+                DicesClickable(true);
+                RollDiceText("Roll");
+                currentState = rollState.Idle;
+                break;
             case Idle:
                 cleanChoices();
                 rollDicesNow();
-                RollDiceText("Select & roll");
+                RollDiceText("Play & Roll");
                 currentState = rollState.Rolled;
                 break;
             case Chosen:
@@ -149,15 +157,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case Rolled: // do nothing and wait for all dices to be chosen
                 break;
             case EndGame:
+                DicesClickable(false);
                 CleanScoring();
                 CleanThrowAway();
                 scoring.NewScore();
                 chosenDices = 0;
                 freeThrow = false;
                 TotalScore("Total: ");
-                currentState = rollState.Idle;
+                currentState = rollState.Starting;
             default:
                 break;
+        }
+    }
+    public void DicesClickable(boolean state){
+        for (ImageView imDice : imDices) {
+            imDice.setEnabled(state);
         }
     }
     public void RollDiceText(String text){
@@ -247,7 +261,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             int tag = (Integer)throwA.getTag();
 
             if( tag == num){
-                throwA.setText(scoring.GetThrowAway(num));
+                throwA.setText(Html.fromHtml( scoring.GetThrowAway(num)));
                 break;
             }else if( tag == 0){
                 throwA.setTag(num);
@@ -289,7 +303,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     public void CleanScoring(){
         for (TextView score : txtNumbers){
-            score.setText("0");
+            score.setText("");
             score.setTextColor(getResources().getColor(R.color.gray_99));
         }
     }
@@ -314,6 +328,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         for (ImageView imChosenDice : imChosenDices) {
             imChosenDice.setTag((int)0);
             imChosenDice.setImageResource(android.R.drawable.gallery_thumb);
+            imChosenDice.setBackground(getResources().getDrawable(R.color.white));
         }
         iDices.clear();
         chosenDices = 0;
@@ -328,7 +343,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             dice.setBackground(getResources().getDrawable(R.color.gray_5));
             dice.setTag(diceTag + 10);
             // diceFive.setBackground(getResources().getDrawable(android.R.drawable.gallery_thumb))
-            choseDice(dice.getDrawable(), diceTag);
+            choseDice(dice, diceTag);
         }
         else
         {
@@ -338,22 +353,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         addChosenDicesSum();
     }
-    public void choseDice(Drawable diceImage, int diceNum){
+    public void choseDice(ImageView dice, int diceNum){
+        int index = 0;
         for (ImageView imChosenDice : imChosenDices) {
             if ((Integer)imChosenDice.getTag() == 0) {
-                imChosenDice.setImageDrawable(diceImage);
+                int color = DefineColor(index);
+                imChosenDice.setBackground(getResources().getDrawable(color));
+                dice.setBackground(getResources().getDrawable(color));
+
+                imChosenDice.setImageDrawable(dice.getDrawable());
                 imChosenDice.setTag(diceNum);
                 chosenDices++;
                 setEnableRoll();
                 break;
             }
+            index++;
         }
+    }
+    private int DefineColor(int index){
+        int color = R.color.black;
+
+        if(index < 2 ){
+            color = R.color.teal_700;
+        } else if (index < 4){
+            color = R.color.purple_700;
+        }
+        return color;
     }
     public void removeDice(Drawable diceImage, int diceNum){
         for (ImageView imChosenDice : imChosenDices) {
             if (imChosenDice.getDrawable() == diceImage) {
                 imChosenDice.setImageResource(android.R.drawable.gallery_thumb);
                 imChosenDice.setTag(0);
+                imChosenDice.setBackground(getResources().getDrawable(R.color.white));
                 chosenDices--;
                 setEnableRoll();
                 break;

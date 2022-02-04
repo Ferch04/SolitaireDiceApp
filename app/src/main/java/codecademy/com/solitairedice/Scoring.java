@@ -1,7 +1,10 @@
 package codecademy.com.solitairedice;
 
+import android.text.Html;
+
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Objects;
 
 public class Scoring {
     private class Score {
@@ -31,6 +34,10 @@ public class Scoring {
             return Count;
         }
     }
+    private class Throw{
+        public int count = 0;
+        public String text;
+    }
 
     public enum ScoreState{
         Starting,
@@ -40,7 +47,7 @@ public class Scoring {
     };
 
     Hashtable<Integer, Score> hasScore = new Hashtable<Integer, Score>();
-    Hashtable<Integer, String> hashThrowAway = new Hashtable<Integer, String>();
+    Hashtable<Integer, Throw> hashThrowAway = new Hashtable<Integer, Throw>();
     ScoreState state;
 
     public void NewScore(){
@@ -87,7 +94,8 @@ public class Scoring {
         return count;
     }
     public String GetThrowAway(int num){
-        return hashThrowAway.get(num);
+        Throw aux_throw = hashThrowAway.get(num);
+        return aux_throw.text;
     }
     public int GetCount(int num){
         return (hasScore.get(num)).Count;
@@ -100,18 +108,37 @@ public class Scoring {
 
         if(hashThrowAway.size() < 3){
             if(hashThrowAway.containsKey(num)) {
-                hashThrowAway.put(num, hashThrowAway.get(num).concat("I"));
-                    if(GetNumOfThrowAway(hashThrowAway.get(num)) == 8 ){
+                Throw aux_throw = hashThrowAway.get(num);
+                aux_throw.count++;
+                aux_throw.text = aux_throw.text.concat("I");
+                hashThrowAway.put(num, aux_throw);
+                    if(aux_throw.count == 8 ){
                         state = ScoreState.Finish;
                     }
 
             } else {
-                hashThrowAway.put(num, ("(" + num).concat("): I"));
+                Throw new_throw = new Throw();
+                new_throw.count ++;
+                new_throw.text = "(" + num + "): I";
+
+                hashThrowAway.put(num, new_throw);
             }
         }
         else if (hashThrowAway.size() == 3){
             if(hashThrowAway.containsKey(num)) {
-                hashThrowAway.put(num, hashThrowAway.get(num).concat("I"));
+                Throw aux_throw = hashThrowAway.get(num);
+                aux_throw.count ++;
+                if(aux_throw.count == 5){
+                    StringBuffer newScore =
+                            new StringBuffer( Objects.requireNonNull(aux_throw.text));
+                    newScore.insert( 5, "<del>");
+                    newScore.append("</del> ");
+                    aux_throw.text = newScore.toString();
+                }
+                else{
+                    aux_throw.text = aux_throw.text.concat("I");
+                }
+                hashThrowAway.put(num, aux_throw);
             } else {
                 added = false;
             }
@@ -140,8 +167,8 @@ public class Scoring {
                 }
                 break;
             case ThreeThrowAway:
-                for(String txt : hashThrowAway.values()){
-                    if(8 == GetNumOfThrowAway(txt)){
+                for(Throw throw_a : hashThrowAway.values()){
+                    if(8 == throw_a.count){
                         state = ScoreState.Finish;
                         break;
                     }
