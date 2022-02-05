@@ -67,6 +67,9 @@ public class Scoring {
         hasScore.put( 12, new Score(12, 100));
     }
     public String TotalScore(){
+        return String.valueOf(IntTotalScore());
+    }
+    public int IntTotalScore(){
         int total = 0;
 
         Enumeration keys = hasScore.keys();
@@ -75,7 +78,7 @@ public class Scoring {
             total += hasScore.get(keys.nextElement()).Sum;
         }
 
-        return String.valueOf(total);
+        return total;
     }
     private void ClearScore(){
         hashThrowAway.clear();

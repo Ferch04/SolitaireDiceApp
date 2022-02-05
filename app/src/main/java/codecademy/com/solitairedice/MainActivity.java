@@ -4,7 +4,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.text.Html;
@@ -101,6 +103,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         for(TextView txThrow : txtThrows){
             txThrow.setTag((int)0);
         }
+
+        Button getScore = findViewById(R.id.getScore);
+        getScore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences highScore =
+                        getApplicationContext().getSharedPreferences("ScoreHistory", MODE_PRIVATE);
+                ShowMessage(String.valueOf(highScore.getInt("High", 0)));
+            }
+        });
 
         roll.setOnClickListener(this);
         diceOne.setOnClickListener(this);
@@ -211,7 +223,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 "\nScore: " + scoring.TotalScore());
         RollDiceText("Start");
         RollDiceStatus(true);
+        SaveHighestScore();
+
         currentState = rollState.EndGame;
+    }
+    public void SaveHighestScore(){
+        // shared preferences. todo: encryptedSharedPreferences
+        SharedPreferences highScore =
+                getApplicationContext().getSharedPreferences("ScoreHistory", MODE_PRIVATE);
+        SharedPreferences.Editor editor = highScore.edit();
+
+        int last_high_score = highScore.getInt("High", 0);
+        if(scoring.IntTotalScore() > last_high_score ) {
+            editor.putInt("High", scoring.IntTotalScore());
+            editor.apply();
+        }
     }
     public boolean ValidateThrowAway(int throwAway){
 
