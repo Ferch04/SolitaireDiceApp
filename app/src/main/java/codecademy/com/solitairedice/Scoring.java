@@ -1,13 +1,11 @@
 package codecademy.com.solitairedice;
 
-import android.text.Html;
-
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Objects;
 
 public class Scoring {
-    private class Score {
+    private static class Score {
         public int Num;
         public int Sum;
         public int Multiplier;
@@ -19,7 +17,7 @@ public class Scoring {
             Sum = 0;
             Count = 0;
         }
-        public int PlusOne(){
+        public void PlusOne(){
             Count++;
 
             if(Count <= 4 ){
@@ -31,10 +29,9 @@ public class Scoring {
             else{
                 Sum = (Count - 5 ) * Multiplier;
             }
-            return Count;
         }
     }
-    private class Throw{
+    private static class Throw{
         public int count = 0;
         public String text;
     }
@@ -44,10 +41,10 @@ public class Scoring {
         ChoosingThrowAway,
         ThreeThrowAway,
         Finish
-    };
+    }
 
-    Hashtable<Integer, Score> hasScore = new Hashtable<Integer, Score>();
-    Hashtable<Integer, Throw> hashThrowAway = new Hashtable<Integer, Throw>();
+    Hashtable<Integer, Score> hasScore = new Hashtable<>();
+    Hashtable<Integer, Throw> hashThrowAway = new Hashtable<>();
     ScoreState state;
 
     public void NewScore(){
@@ -72,10 +69,10 @@ public class Scoring {
     public int IntTotalScore(){
         int total = 0;
 
-        Enumeration keys = hasScore.keys();
+        Enumeration<Integer> keys = hasScore.keys();
 
         while(keys.hasMoreElements()){
-            total += hasScore.get(keys.nextElement()).Sum;
+            total += Objects.requireNonNull(hasScore.get(keys.nextElement())).Sum;
         }
 
         return total;
@@ -85,34 +82,26 @@ public class Scoring {
         hasScore.clear();
     }
 
-    private int GetNumOfThrowAway(String text){
-        char charI = 'I';
-        int count = 0;
-
-        for(int i = 0; i < text.length(); i++ ){
-            if (text.charAt(i) == charI){
-                count++;
-            }
-        }
-        return count;
-    }
     public String GetThrowAway(int num){
         Throw aux_throw = hashThrowAway.get(num);
+        assert aux_throw != null;
         return aux_throw.text;
     }
     public int GetCount(int num){
-        return (hasScore.get(num)).Count;
+        return (Objects.requireNonNull(hasScore.get(num))).Count;
     }
+
     public boolean IsThrowAway(int num){
         return hashThrowAway.containsKey(num);
     }
+
     public boolean AddThrowAway(int num){
         boolean added = true;
 
         if(hashThrowAway.size() < 3){
             if(hashThrowAway.containsKey(num)) {
                 Throw aux_throw = hashThrowAway.get(num);
-                aux_throw.count++;
+                Objects.requireNonNull(aux_throw).count++;
                 aux_throw.text = aux_throw.text.concat("I");
                 hashThrowAway.put(num, aux_throw);
                     if(aux_throw.count == 8 ){
@@ -130,10 +119,10 @@ public class Scoring {
         else if (hashThrowAway.size() == 3){
             if(hashThrowAway.containsKey(num)) {
                 Throw aux_throw = hashThrowAway.get(num);
-                aux_throw.count ++;
+                Objects.requireNonNull(aux_throw).count ++;
                 if(aux_throw.count == 5){
-                    StringBuffer newScore =
-                            new StringBuffer( Objects.requireNonNull(aux_throw.text));
+                    StringBuilder newScore =
+                            new StringBuilder( Objects.requireNonNull(aux_throw.text));
                     newScore.insert( 5, "<del>");
                     newScore.append("</del> ");
                     aux_throw.text = newScore.toString();
@@ -153,7 +142,7 @@ public class Scoring {
     public void AddNewNumber(int num){
         if( 2 <= num && num <= 12 ) {
             Score auxScore = hasScore.get(num);
-            auxScore.PlusOne();
+            Objects.requireNonNull(auxScore).PlusOne();
         }
     }
 
