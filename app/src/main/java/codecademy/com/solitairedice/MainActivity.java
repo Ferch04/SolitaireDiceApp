@@ -1,22 +1,24 @@
 package codecademy.com.solitairedice;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.text.Html;
 import android.util.Log;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.view.View;
 import android.widget.Button;
 
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +49,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         EndGame
     }
     rollState currentState = rollState.Starting;
+
+    @Override
+    public boolean onCreateOptionsMenu(android.view.Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_dice, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.Score:
+                SharedPreferences highScore =
+                        getApplicationContext().getSharedPreferences("ScoreHistory", MODE_PRIVATE);
+                Toast.makeText(this, "Highest score: " +
+                                String.valueOf(highScore.getInt("High", 0))
+                        , Toast.LENGTH_LONG).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,16 +127,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         for(TextView txThrow : txtThrows){
             txThrow.setTag((int)0);
         }
-
-        Button getScore = findViewById(R.id.getScore);
-        getScore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SharedPreferences highScore =
-                        getApplicationContext().getSharedPreferences("ScoreHistory", MODE_PRIVATE);
-                ShowMessage(String.valueOf(highScore.getInt("High", 0)));
-            }
-        });
 
         roll.setOnClickListener(this);
         diceOne.setOnClickListener(this);
