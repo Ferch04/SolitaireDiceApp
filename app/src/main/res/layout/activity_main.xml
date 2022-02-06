@@ -125,7 +125,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:background="@color/white"
-            android:clickable="false"
+            android:clickable="true"
             android:cropToPadding="true"
             android:longClickable="false"
             android:padding="3dp"
@@ -141,7 +141,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:background="@color/white"
-            android:clickable="false"
+            android:clickable="true"
             android:cropToPadding="true"
             android:padding="3dp"
             app:srcCompat="@android:drawable/gallery_thumb" />
@@ -155,7 +155,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:background="@color/white"
-            android:clickable="false"
+            android:clickable="true"
             android:cropToPadding="true"
             android:padding="3dp"
             app:srcCompat="@android:drawable/gallery_thumb" />
@@ -169,7 +169,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:background="@color/white"
-            android:clickable="false"
+            android:clickable="true"
             android:cropToPadding="true"
             android:padding="3dp"
             app:srcCompat="@android:drawable/gallery_thumb" />
@@ -184,7 +184,7 @@
             android:layout_marginRight="8dp"
             android:adjustViewBounds="false"
             android:background="@color/white"
-            android:clickable="false"
+            android:clickable="true"
             android:longClickable="false"
             android:padding="3dp"
             app:srcCompat="@android:drawable/gallery_thumb" />

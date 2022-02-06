@@ -40,13 +40,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Scoring scoring;
 
     enum rollState{
-        Starting,// todo: new state called start game
+        StartGame,
         Idle,
         Rolled,
         Chosen,
         EndGame
     }
-    rollState currentState = rollState.Starting;
+    rollState currentState = rollState.StartGame;
 
     TextView totalScore ;
     Button roll;
@@ -159,12 +159,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void RollDicesMain(){
 
         switch (currentState){
-            case Starting:
-                CleanScoring();
-                DicesClickable(true);
-                roll.setText("Roll");
-                currentState = rollState.Idle;
-                break;
             case Idle:
                 CleanChoices();
                 RollDicesNow();
@@ -174,7 +168,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case Chosen:
                 if(FillNumbers()){
                     CleanChoices();
-                    AddChosenDicesSum();
                     if (scoring.state != Scoring.ScoreState.Finish){
                         RollDicesNow();
                         currentState = rollState.Rolled;
@@ -184,17 +177,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 }
                 break;
-            case Rolled: // do nothing and wait for all dices to be chosen
+            case Rolled:
+                // do nothing and wait for all dices to be chosen
                 break;
             case EndGame:
-                DicesClickable(false);
                 CleanScoring();
                 CleanThrowAway();
                 scoring.NewScore();
                 chosenDices = 0;
                 freeThrow = false;
                 totalScore.setText("Total: ");
-                currentState = rollState.Starting;
+                roll.setText("Roll");
+                currentState = rollState.Idle;
+                break;
+            case StartGame:
+                CleanScoring();
+                roll.setText("Roll");
+                currentState = rollState.Idle;
+                break;
             default:
                 break;
         }
@@ -324,21 +324,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @SuppressLint("UseCompatLoadingForDrawables")
     public void SelectDice(ImageView dice){
-        int diceTag = (Integer)dice.getTag();
-        if(diceTag < 9)
-        {
-            dice.setBackground(getResources().getDrawable(R.color.gray_5));
-            dice.setTag(diceTag + 10);
-            // diceFive.setBackground(getResources().getDrawable(android.R.drawable.gallery_thumb))
-            ChoseDice(dice, diceTag);
+        if ( currentState == rollState.Rolled) {
+            int diceTag = (Integer) dice.getTag();
+            if (diceTag < 9) {
+                dice.setBackground(getResources().getDrawable(R.color.gray_5));
+                dice.setTag(diceTag + 10);
+                // diceFive.setBackground(getResources().getDrawable(android.R.drawable.gallery_thumb))
+                ChoseDice(dice, diceTag);
+            } else {
+                dice.setTag(diceTag - 10);
+                dice.setBackground(getResources().getDrawable(R.color.white));
+                RemoveDice(dice.getDrawable());
+            }
+            AddChosenDicesSum();
         }
-        else
-        {
-            dice.setTag(diceTag - 10);
-            dice.setBackground(getResources().getDrawable(R.color.white));
-            RemoveDice(dice.getDrawable());
-        }
-        AddChosenDicesSum();
     }
     @SuppressLint("UseCompatLoadingForDrawables")
     public void ChoseDice(ImageView dice, int diceNum){
@@ -380,11 +379,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         else{
             RollDiceStatus(false);
             currentState = rollState.Rolled;
-        }
-    }
-    public void DicesClickable(boolean state){
-        for (ImageView imDice : imDices) {
-            imDice.setEnabled(state);
         }
     }
     public void RollDiceStatus(boolean state){
