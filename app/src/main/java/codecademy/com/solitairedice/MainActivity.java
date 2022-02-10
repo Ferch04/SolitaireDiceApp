@@ -31,52 +31,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     int[] dices = {R.drawable.dice1, R.drawable.dice2, R.drawable.dice3,  R.drawable.dice4,
             R.drawable.dice5, R.drawable.dice6 };
 
-    public class SolitaireWindow{
-        List<Integer> aDicesInt;
-        ImageView[] aDices;
-        ImageView[] aChosenDices;
-        TextView[] aChosenText;
-        TextView[] aNumbersText;
-        TextView[] aThrowsText;
-        int[] chosenInt;
 
-        public void CleanScoring(){
-            for (TextView score : aNumbersText){
-                score.setText("");
-                score.setTextColor(getResources().getColor(R.color.gray_99));
-            }
-        }
-        @SuppressLint("DefaultLocale")
-        public void CleanThrowAway(){
-            int i = 1;
-            for(TextView t_away : aThrowsText){
-                t_away.setTextColor(getResources().getColor(R.color.gray_99));
-                t_away.setText(String.format("Throw away %d", i));
-                t_away.setTag(0);
-                i++;
-            }
-        }
-        @SuppressLint("UseCompatLoadingForDrawables")
-        public void CleanDices(){
-            for (ImageView imDice : aDices) {
-                imDice.setImageResource(android.R.drawable.gallery_thumb);
-                imDice.setBackground(getResources().getDrawable(R.color.white));
-                imDice.setTag(0);
-            }
-        }
-        @SuppressLint("UseCompatLoadingForDrawables")
-        public void CleanChoices(){
-            // removing selection of choices
-            for (ImageView imChosenDice : aChosenDices) {
-                imChosenDice.setTag(0);
-                imChosenDice.setImageResource(android.R.drawable.gallery_thumb);
-                imChosenDice.setBackground(getResources().getDrawable(R.color.white));
-            }
-            aDicesInt.clear();
-            chosenDices = 0;
-            RollDiceStatus(false);
-        }
-    }
 
 
     Scoring scoring;
@@ -166,8 +121,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         window.aThrowsText = new TextView[] {throwOne, throwTwo, throwThree};
         window.chosenInt = new int[] {0, 0};
         window.aDicesInt = new ArrayList<>();
-        window.CleanThrowAway();
-        window.CleanDices();
+        window.CleanThrowAway(getResources().getColor(R.color.gray_99));
+        window.CleanDices(getResources().getDrawable(R.color.white));
 
         scoring = new Scoring();
         scoring.NewScore();
@@ -195,19 +150,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
     }
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "UseCompatLoadingForDrawables"})
     public void RollDicesMain(SolitaireWindow sWindow){
 
         switch (currentState){
             case Idle:
-                sWindow.CleanChoices();
+                sWindow.CleanChoices(getResources().getDrawable(R.color.white));
+                chosenDices = 0;
+                RollDiceStatus(false);
                 RollDicesNow(sWindow);
                 roll.setText("Play & Roll");
                 currentState = rollState.Rolled;
                 break;
             case Chosen:
                 if(FillNumbers(sWindow)){
-                    sWindow.CleanChoices();
+                    sWindow.CleanChoices(getResources().getDrawable(R.color.white));
+                    chosenDices = 0;
+                    RollDiceStatus(false);
                     if (scoring.state != Scoring.ScoreState.Finish){
                         RollDicesNow(sWindow);
                         currentState = rollState.Rolled;
@@ -221,8 +180,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 // do nothing and wait for all dices to be chosen
                 break;
             case EndGame:
-                sWindow.CleanScoring();
-                sWindow.CleanThrowAway();
+                sWindow.CleanScoring(getResources().getColor(R.color.gray_99));
+                sWindow.CleanThrowAway(getResources().getColor(R.color.gray_99));
                 scoring.NewScore();
                 chosenDices = 0;
                 freeThrow = false;
@@ -231,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 currentState = rollState.Idle;
                 break;
             case StartGame:
-                sWindow.CleanScoring();
+                sWindow.CleanScoring(getResources().getColor(R.color.gray_99));
                 roll.setText("Roll");
                 currentState = rollState.Idle;
                 break;
@@ -239,9 +198,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
     }
+    @SuppressLint("UseCompatLoadingForDrawables")
     public void EndGame(SolitaireWindow sWindow){
-        sWindow.CleanChoices();
-        sWindow.CleanDices();
+        sWindow.CleanChoices(getResources().getDrawable(R.color.white));
+        chosenDices = 0;
+        RollDiceStatus(false);
+        sWindow.CleanDices(getResources().getDrawable(R.color.white));
         ShowMessage("End of Game" +
                 "\nScore: " + scoring.TotalScore());
         roll.setText("Start");
