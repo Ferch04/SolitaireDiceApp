@@ -5,10 +5,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
-import android.text.Html;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -20,17 +16,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+
+import static codecademy.com.solitairedice.R.color.black_1;
+import static codecademy.com.solitairedice.R.color.gray_99;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-
-    Random random = new Random();
-    // boolean freeThrow = false;
-    int chosenDices = 0;
-    int[] dices = {R.drawable.dice1, R.drawable.dice2, R.drawable.dice3,  R.drawable.dice4,
-            R.drawable.dice5, R.drawable.dice6 };
-
     Scoring scoring;
 
     enum rollState{
@@ -44,7 +34,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     TextView totalScore ;
     Button roll;
-
     SolitaireWindow window;
 
     @Override
@@ -119,7 +108,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         window.chosenInt = new int[] {0, 0};
         window.aDicesInt = new ArrayList<>();
         window.CleanThrowAway();
-        window.CleanDices(getResources().getDrawable(R.color.white));
+        window.CleanDices();
+        window.chosenDices = 0;
+        window.dices = new int[] {R.drawable.dice1, R.drawable.dice2, R.drawable.dice3,  R.drawable.dice4,
+                R.drawable.dice5, R.drawable.dice6 };
+        window.purple = getResources().getDrawable(R.color.purple_700);
+        window.bblack = getResources().getDrawable(R.color.black);
+        window.teal = getResources().getDrawable(R.color.teal_200);
+        window.white = getResources().getDrawable(R.color.white);
 
         scoring = new Scoring();
         scoring.NewScore();
@@ -142,7 +138,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.DiceThree:
             case R.id.DiceFour:
             case R.id.DiceFive:
-                SelectDice(findViewById(v.getId()), window);
+                if ( currentState == MainActivity.rollState.Rolled ||
+                        currentState == MainActivity.rollState.Chosen ) {
+                    window.SelectDice(findViewById(v.getId()));
+                    SetEnableRoll();
+                }
                 break;
         }
 
@@ -152,20 +152,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         switch (currentState){
             case Idle:
-                sWindow.CleanChoices(getResources().getDrawable(R.color.white));
-                chosenDices = 0;
+                sWindow.CleanChoices();
                 RollDiceStatus(false);
-                RollDicesNow(sWindow);
+                sWindow.RollDicesNow(scoring);
                 roll.setText("Play & Roll");
                 currentState = rollState.Rolled;
                 break;
             case Chosen:
-                if(sWindow.FillNumbers(sWindow, scoring, totalScore)){
-                    sWindow.CleanChoices(getResources().getDrawable(R.color.white));
-                    chosenDices = 0;
+                if(sWindow.FillNumbers(scoring, totalScore)){
+                    sWindow.CleanChoices();
                     RollDiceStatus(false);
                     if (scoring.state != Scoring.ScoreState.Finish){
-                        RollDicesNow(sWindow);
+                        sWindow.RollDicesNow(scoring);
                         currentState = rollState.Rolled;
                     }
                     else{
@@ -184,8 +182,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 sWindow.CleanScoring(getResources().getColor(R.color.gray_99));
                 sWindow.CleanThrowAway();
                 sWindow.CleanChosenText();
+                sWindow.chosenDices = 0;
                 scoring.NewScore();
-                chosenDices = 0;
                 sWindow.freeThrow = false;
                 totalScore.setText("Total: ");
                 roll.setText("Roll");
@@ -202,10 +200,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     @SuppressLint("UseCompatLoadingForDrawables")
     public void EndGame(SolitaireWindow sWindow){
-        sWindow.CleanChoices(getResources().getDrawable(R.color.white));
-        chosenDices = 0;
+        sWindow.CleanChoices();
         RollDiceStatus(false);
-        sWindow.CleanDices(getResources().getDrawable(R.color.white));
+        sWindow.CleanDices();
         ShowMessage("End of Game" +
                 "\nScore: " + scoring.TotalScore());
         roll.setText("Start");
@@ -214,112 +211,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         currentState = rollState.EndGame;
     }
-    @SuppressLint("UseCompatLoadingForDrawables")
-    public void RollDicesNow(SolitaireWindow sWindow){
-        int randDice;
-        // removing selection of dices
-        for (ImageView imDice : sWindow.aDices) {
-            randDice = random.nextInt(6);
-            sWindow.aDicesInt.add(randDice + 1);
 
-            imDice.setImageResource(dices[randDice]);
-            imDice.setBackground(getResources().getDrawable(R.color.white));
-            imDice.setTag(randDice + 1);
-        }
-        sWindow.freeThrow = IsFreeThrow(sWindow.aDicesInt);
-    }
-
-    public boolean IsFreeThrow(List<Integer> iDices){
-        boolean throwFounded = false;
-        boolean free = false;
-
-        if(scoring.state == Scoring.ScoreState.ThreeThrowAway){
-            for(int dice : iDices){
-                throwFounded |= scoring.IsThrowAway(dice);
-            }
-            // if at lease on throw away its founded
-            // free throw should be false, otherwise it will be true
-            if(!throwFounded) {
-                free = true;
-                Log.d("fercho", "free throw");
-                Toast.makeText(this, "Free throw", Toast.LENGTH_LONG).show();
-            }
-        }
-
-        return free;
-    }
-
-    @SuppressLint("UseCompatLoadingForDrawables")
-    public void SelectDice(ImageView dice, SolitaireWindow sWindow){
-        if ( currentState == rollState.Rolled ||
-            currentState == rollState.Chosen ) {
-            int diceTag = (Integer) dice.getTag();
-            if (diceTag < 9) {
-                dice.setBackground(getResources().getDrawable(R.color.gray_5));
-                dice.setTag(diceTag + 10);
-                // diceFive.setBackground(getResources().getDrawable(android.R.drawable.gallery_thumb))
-                ChoseDice(dice, diceTag, sWindow.aChosenDices);
-            } else {
-                dice.setTag(diceTag - 10);
-                dice.setBackground(getResources().getDrawable(R.color.white));
-                RemoveDice(dice.getDrawable(), sWindow.aChosenDices);
-            }
-            sWindow.AddChosenDicesSum();
-        }
-    }
-    @SuppressLint("UseCompatLoadingForDrawables")
-    public void ChoseDice(ImageView dice, int diceNum, ImageView[] imChosenDices){
-        int index = 0;
-        for (ImageView imChosenDice : imChosenDices) {
-            if ((Integer)imChosenDice.getTag() == 0) {
-                int color = DefineColor(index);
-                imChosenDice.setBackground(getResources().getDrawable(color));
-                dice.setBackground(getResources().getDrawable(color));
-
-                imChosenDice.setImageDrawable(dice.getDrawable());
-                imChosenDice.setTag(diceNum);
-                chosenDices++;
-                SetEnableRoll(imChosenDices);
-                break;
-            }
-            index++;
-        }
-    }
-    @SuppressLint("UseCompatLoadingForDrawables")
-    public void RemoveDice(Drawable diceImage, ImageView[] imChosenDices){
-        for (ImageView imChosenDice : imChosenDices) {
-            if (imChosenDice.getDrawable() == diceImage) {
-                imChosenDice.setImageResource(android.R.drawable.gallery_thumb);
-                imChosenDice.setTag(0);
-                imChosenDice.setBackground(getResources().getDrawable(R.color.white));
-                chosenDices--;
-                SetEnableRoll(imChosenDices);
-                break;
-            }
-        }
-    }
-
-    public void SetEnableRoll(ImageView[] imChosenDices){
-        if (chosenDices == imChosenDices.length){
+    public void SetEnableRoll(){
+        if (window.IsAllChosen()){
             RollDiceStatus(true);
-            currentState = rollState.Chosen;
+            currentState = MainActivity.rollState.Chosen;
         }
         else{
             RollDiceStatus(false);
-            currentState = rollState.Rolled;
+            currentState = MainActivity.rollState.Rolled;
         }
     }
+    @SuppressLint("ResourceAsColor")
     public void RollDiceStatus(boolean state){
-        Button roll = findViewById(R.id.rollDices);
-        roll.setEnabled(state);
+        Button rollButton  = findViewById(R.id.rollDices);
+        rollButton.setEnabled(state);
 
         if(state){
-            roll.setBackgroundColor(getResources().getColor(R.color.black_1));
+            rollButton.setBackgroundColor(black_1);
         } else {
-            roll.setBackgroundColor(getResources().getColor(R.color.gray_99));
+            rollButton.setBackgroundColor(gray_99);
         }
     }
-
 
     public void ShowMessage(String message){
         AlertDialog alert = new AlertDialog.Builder(MainActivity.this).create();
@@ -339,15 +252,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             editor.putInt("High", scoring.IntTotalScore());
             editor.apply();
         }
-    }
-    private int DefineColor(int index){
-        int color = R.color.black;
-
-        if(index < 2 ){
-            color = R.color.teal_700;
-        } else if (index < 4){
-            color = R.color.purple_700;
-        }
-        return color;
     }
 }
