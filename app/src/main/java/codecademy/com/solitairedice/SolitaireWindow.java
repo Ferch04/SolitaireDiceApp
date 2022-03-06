@@ -37,7 +37,7 @@ public class SolitaireWindow{
             score.setTextColor(color);
         }
     }
-    @SuppressLint("ResourceAsColor")
+    @SuppressLint({"ResourceAsColor", "DefaultLocale"})
     public void CleanThrowAway(){
         int i = 1;
         for(TextView t_away : aThrowsText){
@@ -189,7 +189,7 @@ public class SolitaireWindow{
         return color;
     }
 
-    @SuppressLint("ResourceAsColor")
+    @SuppressLint({"ResourceAsColor", "SetTextI18n"})
     public boolean FillNumbers( Scoring score, TextView total) {
 
         int throwAway = (Integer) aChosenDices[4].getTag();

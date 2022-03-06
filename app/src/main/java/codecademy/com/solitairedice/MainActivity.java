@@ -45,19 +45,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.Score:
+        if (item.getItemId() == R.id.Score){
                 SharedPreferences highScore =
                         getApplicationContext().getSharedPreferences("ScoreHistory", MODE_PRIVATE);
                 Toast.makeText(this, "Highest score: " +
                                 highScore.getInt("High", 0)
                         , Toast.LENGTH_LONG).show();
                 return true;
-            default:
-                return super.onOptionsItemSelected(item);
         }
+        return false;
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,6 +126,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         diceFour.setOnClickListener(this);
         diceFive.setOnClickListener(this);
     }
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
