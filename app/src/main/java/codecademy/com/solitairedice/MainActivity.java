@@ -5,9 +5,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
-import android.text.Html;
-import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -19,24 +16,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+
+import static codecademy.com.solitairedice.R.color.black_1;
+import static codecademy.com.solitairedice.R.color.gray_99;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-
-    Random random = new Random();
-    boolean freeThrow = false;
-    int chosenDices = 0;
-    int[] dices = {R.drawable.dice1, R.drawable.dice2, R.drawable.dice3,  R.drawable.dice4,
-            R.drawable.dice5, R.drawable.dice6 };
-
-    int[] chosen;
-    List<Integer> iDices;
-    ImageView[] imDices ;
-    ImageView[] imChosenDices;
-    TextView[] txtChosen;
-    TextView[] txtNumbers;
-    TextView[] txtThrows;
     Scoring scoring;
 
     enum rollState{
@@ -50,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     TextView totalScore ;
     Button roll;
+    SolitaireWindow window;
 
     @Override
     public boolean onCreateOptionsMenu(android.view.Menu menu) {
@@ -60,19 +45,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.Score:
+        if (item.getItemId() == R.id.Score){
                 SharedPreferences highScore =
                         getApplicationContext().getSharedPreferences("ScoreHistory", MODE_PRIVATE);
                 Toast.makeText(this, "Highest score: " +
                                 highScore.getInt("High", 0)
                         , Toast.LENGTH_LONG).show();
                 return true;
-            default:
-                return super.onOptionsItemSelected(item);
         }
+        return false;
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,26 +95,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         final TextView throwTwo = findViewById(R.id.textThrowAwTwo);
         final TextView throwThree = findViewById(R.id.textThrowAwThree);
         // endregion
-        chosen = new int[] {0, 0};
-        txtChosen = new TextView[] {choseOne, choseTwo};
-        txtNumbers = new TextView[] {numberTwo, numberThree, numberFour, numberFive, numberSix,
-                numberSeven, numberEight, numberNine, numberTen, numberEleven, numberTwelve};
-        txtThrows = new TextView[] {throwOne, throwTwo, throwThree};
 
-        imDices = new ImageView[] {diceOne, diceTwo, diceThree, diceFour, diceFive};
-        imChosenDices = new ImageView[]
+        window = new SolitaireWindow();
+        window.aDices = new ImageView[] {diceOne, diceTwo, diceThree, diceFour, diceFive};
+        window.aChosenDices = new ImageView[]
                 {choseOneOne, choseOneTwo, choseTwoOne, choseTwoTwo, choseThrowaway};
+        window.aChosenText = new TextView[] {choseOne, choseTwo};
+        window.aNumbersText = new TextView[] {numberTwo, numberThree, numberFour, numberFive, numberSix,
+                numberSeven, numberEight, numberNine, numberTen, numberEleven, numberTwelve};
+        window.aThrowsText = new TextView[] {throwOne, throwTwo, throwThree};
+        window.chosenInt = new int[] {0, 0};
+        window.aDicesInt = new ArrayList<>();
+        window.CleanThrowAway();
+        window.CleanDices();
+        window.chosenDices = 0;
+        window.dices = new int[] {R.drawable.dice1, R.drawable.dice2, R.drawable.dice3,  R.drawable.dice4,
+                R.drawable.dice5, R.drawable.dice6 };
+        window.purple = getResources().getDrawable(R.color.purple_700);
+        window.bblack = getResources().getDrawable(R.color.black);
+        window.teal = getResources().getDrawable(R.color.teal_200);
+        window.white = getResources().getDrawable(R.color.white);
 
         scoring = new Scoring();
         scoring.NewScore();
-        iDices = new ArrayList<>();
-
-        for (ImageView imDice : imDices) {
-            imDice.setTag(0);
-        }
-        for(TextView txThrow : txtThrows){
-            txThrow.setTag(0);
-        }
 
         roll.setOnClickListener(this);
         diceOne.setOnClickListener(this);
@@ -139,59 +126,71 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         diceFour.setOnClickListener(this);
         diceFive.setOnClickListener(this);
     }
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.rollDices:
-                RollDicesMain();
+                RollDicesMain(window);
                 break;
             case R.id.DiceOne:
             case R.id.DiceTwo:
             case R.id.DiceThree:
             case R.id.DiceFour:
             case R.id.DiceFive:
-                SelectDice(findViewById(v.getId()));
+                if ( currentState == MainActivity.rollState.Rolled ||
+                        currentState == MainActivity.rollState.Chosen ) {
+                    window.SelectDice(findViewById(v.getId()));
+                    SetEnableRoll();
+                }
                 break;
         }
 
     }
-    @SuppressLint("SetTextI18n")
-    public void RollDicesMain(){
+    @SuppressLint({"SetTextI18n", "UseCompatLoadingForDrawables"})
+    public void RollDicesMain(SolitaireWindow sWindow){
 
         switch (currentState){
             case Idle:
-                CleanChoices();
-                RollDicesNow();
+                sWindow.CleanChoices();
+                RollDiceStatus(false);
+                sWindow.RollDicesNow(scoring);
                 roll.setText("Play & Roll");
                 currentState = rollState.Rolled;
                 break;
             case Chosen:
-                if(FillNumbers()){
-                    CleanChoices();
+                if(sWindow.FillNumbers(scoring, totalScore)){
+                    sWindow.CleanChoices();
+                    RollDiceStatus(false);
                     if (scoring.state != Scoring.ScoreState.Finish){
-                        RollDicesNow();
+                        sWindow.RollDicesNow(scoring);
                         currentState = rollState.Rolled;
                     }
                     else{
-                        EndGame();
+                        EndGame(sWindow);
                     }
+                }else
+                {
+                    ShowMessage("Invalid throw away," +
+                            "\nplease select a valid one");
                 }
                 break;
             case Rolled:
                 // do nothing and wait for all dices to be chosen
                 break;
             case EndGame:
-                CleanScoring();
-                CleanThrowAway();
+                sWindow.CleanScoring(getResources().getColor(R.color.gray_99));
+                sWindow.CleanThrowAway();
+                sWindow.CleanChosenText();
+                sWindow.chosenDices = 0;
                 scoring.NewScore();
-                chosenDices = 0;
-                freeThrow = false;
+                sWindow.freeThrow = false;
                 totalScore.setText("Total: ");
                 roll.setText("Roll");
                 currentState = rollState.Idle;
                 break;
             case StartGame:
-                CleanScoring();
+                sWindow.CleanScoring(getResources().getColor(R.color.gray_99));
                 roll.setText("Roll");
                 currentState = rollState.Idle;
                 break;
@@ -199,9 +198,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
     }
-    public void EndGame(){
-        CleanChoices();
-        CleanDices();
+    @SuppressLint("UseCompatLoadingForDrawables")
+    public void EndGame(SolitaireWindow sWindow){
+        sWindow.CleanChoices();
+        RollDiceStatus(false);
+        sWindow.CleanDices();
         ShowMessage("End of Game" +
                 "\nScore: " + scoring.TotalScore());
         roll.setText("Start");
@@ -210,223 +211,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         currentState = rollState.EndGame;
     }
-    @SuppressLint("UseCompatLoadingForDrawables")
-    public void RollDicesNow(){
-        int randDice;
-        // removing selection of dices
-        for (ImageView imDice : imDices) {
-            randDice = random.nextInt(6);
-            iDices.add(randDice + 1);
-
-            imDice.setImageResource(dices[randDice]);
-            imDice.setBackground(getResources().getDrawable(R.color.white));
-            imDice.setTag(randDice + 1);
-        }
-        IsFreeThrow();
-    }
-    public void AddChosenDicesSum(){
-        int numOne = 0;
-        int numTwo = 0;
-
-        for(int i=0; i < imChosenDices.length - 1; i++){
-            if((Integer)imChosenDices[i].getTag() != 0) {
-                int diceValue = (Integer)imChosenDices[i].getTag();
-                if (i == 1 || i == 0) {
-                    numOne = numOne + diceValue;
-                } else if (i == 2 || i == 3) {
-                    numTwo += diceValue;
-                }
-            }
-        }
-        txtChosen[0].setText(String.valueOf(numOne));
-        txtChosen[1].setText(String.valueOf(numTwo));
-
-        chosen[0] = numOne;
-        chosen[1] = numTwo;
-
-    }
-
-    public boolean ValidateThrowAway(int throwAway){
-
-        boolean isValid = true;
-
-        if(freeThrow){
-            freeThrow = false;
-        } else{
-            isValid = scoring.AddThrowAway(throwAway);
-        }
-
-        return isValid;
-    }
-    @SuppressLint("UseCompatLoadingForDrawables")
-    public boolean FillNumbers() {
-
-        int throwAway = (Integer) imChosenDices[4].getTag();
-        boolean isValid = ValidateThrowAway(throwAway);
-
-        // Check if throw away is valid
-        if (isValid) {
-            scoring.AddNewNumber(chosen[0]);
-            scoring.AddNewNumber(chosen[1]);
-
-            txtNumbers[chosen[0] - 2].setText(String.valueOf(
-                    scoring.GetCount(chosen[0])));
-            txtNumbers[chosen[1] - 2].setText(String.valueOf(
-                    scoring.GetCount(chosen[1])));
-
-            txtNumbers[chosen[0] - 2].setTextColor(getResources().getColor(R.color.black));
-            txtNumbers[chosen[1] - 2].setTextColor(getResources().getColor(R.color.black));
-
-            totalScore.setText("Total : " + scoring.TotalScore());
-
-            FillThrowAway((Integer) imChosenDices[4].getTag());
-        } else
-        {
-            ShowMessage("Invalid throw away," +
-                    "\nplease select a valid one");
-        }
-
-        return isValid;
-    }
-    public void FillThrowAway(int num){
-
-        for(TextView throwA: txtThrows){
-            int tag = (Integer)throwA.getTag();
-
-            if( tag == num){
-                throwA.setText(Html.fromHtml( scoring.GetThrowAway(num)));
-                break;
-            }else if( tag == 0){
-                throwA.setTag(num);
-                throwA.setText(scoring.GetThrowAway(num));
-                throwA.setTextColor(getResources().getColor(R.color.black));
-                break;
-            }
-        }
-    }
-    public void IsFreeThrow(){
-        boolean throwFounded = false;
-
-        Log.d("fercho", "state " + scoring.state);
-        if(scoring.state == Scoring.ScoreState.ThreeThrowAway){
-            for(int dice : iDices){
-                throwFounded |= scoring.IsThrowAway(dice);
-            }
-            // if at lease on throw away its founded
-            // free throw should be false, otherwise it will be true
-            if(!throwFounded) {
-                freeThrow = true;
-                Log.d("fercho", "free throw");
-                // todo: show that its a free throw
-            }
-        }
-    }
-
-    @SuppressLint("UseCompatLoadingForDrawables")
-    public void SelectDice(ImageView dice){
-        if ( currentState == rollState.Rolled) {
-            int diceTag = (Integer) dice.getTag();
-            if (diceTag < 9) {
-                dice.setBackground(getResources().getDrawable(R.color.gray_5));
-                dice.setTag(diceTag + 10);
-                // diceFive.setBackground(getResources().getDrawable(android.R.drawable.gallery_thumb))
-                ChoseDice(dice, diceTag);
-            } else {
-                dice.setTag(diceTag - 10);
-                dice.setBackground(getResources().getDrawable(R.color.white));
-                RemoveDice(dice.getDrawable());
-            }
-            AddChosenDicesSum();
-        }
-    }
-    @SuppressLint("UseCompatLoadingForDrawables")
-    public void ChoseDice(ImageView dice, int diceNum){
-        int index = 0;
-        for (ImageView imChosenDice : imChosenDices) {
-            if ((Integer)imChosenDice.getTag() == 0) {
-                int color = DefineColor(index);
-                imChosenDice.setBackground(getResources().getDrawable(color));
-                dice.setBackground(getResources().getDrawable(color));
-
-                imChosenDice.setImageDrawable(dice.getDrawable());
-                imChosenDice.setTag(diceNum);
-                chosenDices++;
-                SetEnableRoll();
-                break;
-            }
-            index++;
-        }
-    }
-    @SuppressLint("UseCompatLoadingForDrawables")
-    public void RemoveDice(Drawable diceImage){
-        for (ImageView imChosenDice : imChosenDices) {
-            if (imChosenDice.getDrawable() == diceImage) {
-                imChosenDice.setImageResource(android.R.drawable.gallery_thumb);
-                imChosenDice.setTag(0);
-                imChosenDice.setBackground(getResources().getDrawable(R.color.white));
-                chosenDices--;
-                SetEnableRoll();
-                break;
-            }
-        }
-    }
 
     public void SetEnableRoll(){
-        if (chosenDices == imChosenDices.length){
+        if (window.IsAllChosen()){
             RollDiceStatus(true);
-            currentState = rollState.Chosen;
+            currentState = MainActivity.rollState.Chosen;
         }
         else{
             RollDiceStatus(false);
-            currentState = rollState.Rolled;
+            currentState = MainActivity.rollState.Rolled;
         }
     }
+    @SuppressLint("ResourceAsColor")
     public void RollDiceStatus(boolean state){
-        Button roll = findViewById(R.id.rollDices);
-        roll.setEnabled(state);
+        Button rollButton  = findViewById(R.id.rollDices);
+        rollButton.setEnabled(state);
 
         if(state){
-            roll.setBackgroundColor(getResources().getColor(R.color.black_1));
+            rollButton.setBackgroundColor(black_1);
         } else {
-            roll.setBackgroundColor(getResources().getColor(R.color.gray_99));
+            rollButton.setBackgroundColor(gray_99);
         }
-    }
-
-    public void CleanScoring(){
-        for (TextView score : txtNumbers){
-            score.setText("");
-            score.setTextColor(getResources().getColor(R.color.gray_99));
-        }
-    }
-    @SuppressLint("DefaultLocale")
-    public void CleanThrowAway(){
-        int i = 1;
-        for(TextView t_away : txtThrows){
-            t_away.setTextColor(getResources().getColor(R.color.gray_99));
-            t_away.setText(String.format("Throw away %d", i));
-            t_away.setTag(0);
-            i++;
-        }
-    }
-    @SuppressLint("UseCompatLoadingForDrawables")
-    public void CleanDices(){
-        for (ImageView imDice : imDices) {
-            imDice.setImageResource(android.R.drawable.gallery_thumb);
-            imDice.setBackground(getResources().getDrawable(R.color.white));
-            imDice.setTag(0);
-        }
-    }
-    @SuppressLint("UseCompatLoadingForDrawables")
-    public void CleanChoices(){
-        // removing selection of choices
-        for (ImageView imChosenDice : imChosenDices) {
-            imChosenDice.setTag(0);
-            imChosenDice.setImageResource(android.R.drawable.gallery_thumb);
-            imChosenDice.setBackground(getResources().getDrawable(R.color.white));
-        }
-        iDices.clear();
-        chosenDices = 0;
-        RollDiceStatus(false);
     }
 
     public void ShowMessage(String message){
@@ -447,15 +252,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             editor.putInt("High", scoring.IntTotalScore());
             editor.apply();
         }
-    }
-    private int DefineColor(int index){
-        int color = R.color.black;
-
-        if(index < 2 ){
-            color = R.color.teal_700;
-        } else if (index < 4){
-            color = R.color.purple_700;
-        }
-        return color;
     }
 }

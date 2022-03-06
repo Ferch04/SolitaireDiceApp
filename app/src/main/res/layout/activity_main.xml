@@ -117,7 +117,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
-            android:id="@+id/DiceTwo"
+            android:id="@+id/DiceOne"
             android:layout_width="55dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
@@ -127,13 +127,11 @@
             android:background="@color/white"
             android:clickable="true"
             android:cropToPadding="true"
-            android:longClickable="false"
             android:padding="3dp"
-            android:scaleType="centerInside"
             app:srcCompat="@android:drawable/gallery_thumb" />
 
         <ImageView
-            android:id="@+id/DiceFour"
+            android:id="@+id/DiceTwo"
             android:layout_width="55dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
@@ -161,7 +159,7 @@
             app:srcCompat="@android:drawable/gallery_thumb" />
 
         <ImageView
-            android:id="@+id/DiceOne"
+            android:id="@+id/DiceFour"
             android:layout_width="55dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
