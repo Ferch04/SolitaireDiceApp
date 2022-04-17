@@ -52,6 +52,7 @@ public class SolitaireWindow{
     }
     public void CleanChoices(){
         Clean(aChosenDices);
+        CleanChosenText();
         aDicesInt.clear();
         chosenDices = 0;
     }

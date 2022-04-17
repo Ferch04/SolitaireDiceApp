@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 R.drawable.dice5, R.drawable.dice6 };
         window.purple = getResources().getDrawable(R.color.purple_700);
         window.bblack = getResources().getDrawable(R.color.black);
-        window.teal = getResources().getDrawable(R.color.teal_200);
+        window.teal = getResources().getDrawable(R.color.teal_700);
         window.white = getResources().getDrawable(R.color.white);
 
         scoring = new Scoring();
