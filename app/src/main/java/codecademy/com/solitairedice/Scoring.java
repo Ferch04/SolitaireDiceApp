@@ -145,6 +145,9 @@ public class Scoring {
             Objects.requireNonNull(auxScore).PlusOne();
         }
     }
+    public String GetNumberScore(int num){
+        return String.valueOf(hasScore.get(num));
+    }
 
     private void DefineState(){
         switch (state){

@@ -31,6 +31,25 @@ public class SolitaireWindow{
     Drawable teal;
     Drawable white;
 
+    public void EndGame(){
+        CleanScoring(R.color.gray_99);
+        CleanThrowAway();
+        CleanChosenText();
+        chosenDices = 0;
+        freeThrow = false;
+    }
+    public void EndingGame(){
+        CleanChoices();
+        CleanDices();
+    }
+    private void InsertPlayerScore(Scoring playerScore){
+        int scoreNum = 2;
+        for(TextView score : aNumbersText){
+            score.setText(playerScore.GetNumberScore(scoreNum));
+            scoreNum++;
+        }
+    }
+
     public void CleanScoring(int color){
         for (TextView score : aNumbersText){
             score.setText("");
@@ -153,11 +172,11 @@ public class SolitaireWindow{
         for (ImageView imChosenDice : aChosenDices) {
             if ((Integer)imChosenDice.getTag() == 0) {
                 Drawable color = DefineColor(index);
-                imChosenDice.setBackground(color);
                 dice.setBackground(color);
 
                 imChosenDice.setImageDrawable(dice.getDrawable());
                 imChosenDice.setTag(diceNum);
+                imChosenDice.setBackground(color);
                 chosenDices++;
                 break;
             }

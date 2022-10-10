@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         currentState = rollState.Rolled;
                     }
                     else{
-                        EndGame(sWindow);
+                        EndingGame(sWindow);
                     }
                 }else
                 {
@@ -179,12 +179,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 // do nothing and wait for all dices to be chosen
                 break;
             case EndGame:
-                sWindow.CleanScoring(getResources().getColor(R.color.gray_99));
-                sWindow.CleanThrowAway();
-                sWindow.CleanChosenText();
-                sWindow.chosenDices = 0;
+                sWindow.EndGame();
                 scoring.NewScore();
-                sWindow.freeThrow = false;
                 totalScore.setText("Total: ");
                 roll.setText("Roll");
                 currentState = rollState.Idle;
@@ -199,10 +195,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
     @SuppressLint("UseCompatLoadingForDrawables")
-    public void EndGame(SolitaireWindow sWindow){
-        sWindow.CleanChoices();
+    public void EndingGame(SolitaireWindow sWindow){
+        sWindow.EndingGame();
         RollDiceStatus(false);
-        sWindow.CleanDices();
         ShowMessage("End of Game" +
                 "\nScore: " + scoring.TotalScore());
         roll.setText("Start");
