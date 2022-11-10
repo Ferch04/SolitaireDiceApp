@@ -152,11 +152,11 @@ public class SolitaireWindow{
     }
 
     @SuppressLint("ResourceAsColor")
-    public void SelectDice(ImageView dice){
+    public void SelectDice(ImageView dice, Drawable background){
         int diceTag = (Integer) dice.getTag();
         if (diceTag < 9) {
             dice.setTag(diceTag + 10);
-            ChoseDice(dice, diceTag);
+            ChoseDice(dice, diceTag, background);
         } else {
             dice.setTag(diceTag - 10);
             dice.setBackground(white);
@@ -167,16 +167,17 @@ public class SolitaireWindow{
     public boolean IsAllChosen(){
         return chosenDices == aChosenDices.length;
     }
-    public void ChoseDice(ImageView dice, int diceNum){
+    public void ChoseDice(ImageView dice, int diceNum, Drawable background){
         int index = 0;
         for (ImageView imChosenDice : aChosenDices) {
             if ((Integer)imChosenDice.getTag() == 0) {
-                Drawable color = DefineColor(index);
-                dice.setBackground(color);
+
+                // Drawable color = android.R.drawable.custom_shape;// DefineColor(index);
+                dice.setBackground(background);
 
                 imChosenDice.setImageDrawable(dice.getDrawable());
                 imChosenDice.setTag(diceNum);
-                imChosenDice.setBackground(color);
+                imChosenDice.setBackground(background);
                 chosenDices++;
                 break;
             }

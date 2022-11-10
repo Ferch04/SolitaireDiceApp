@@ -56,6 +56,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return false;
     }
 
+    @Override
+    public void onBackPressed()
+    {
+        //Do whatever you want before the back button should trigger
+        super.onBackPressed();  // call this only if you want to close the app
+    }
+
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         diceFour.setOnClickListener(this);
         diceFive.setOnClickListener(this);
     }
-    @SuppressLint("NonConstantResourceId")
+    @SuppressLint({"NonConstantResourceId", "UseCompatLoadingForDrawables"})
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -140,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.DiceFive:
                 if ( currentState == MainActivity.rollState.Rolled ||
                         currentState == MainActivity.rollState.Chosen ) {
-                    window.SelectDice(findViewById(v.getId()));
+                    window.SelectDice(findViewById(v.getId()), getResources().getDrawable(R.drawable.custom_shape));
                     SetEnableRoll();
                 }
                 break;
