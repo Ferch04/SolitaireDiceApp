@@ -198,7 +198,6 @@
         android:layout_marginBottom="16dp"
         android:text="Start"
         android:textColor="@color/white_1"
-        android:textColorHint="@color/teal_200"
         app:backgroundTint="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -589,6 +588,24 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|end"
                     android:text="Total:"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/textTotalScore2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    android:text="Total:"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/textCurrentPlayer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    android:text=""
                     android:textColor="@color/black"
                     android:textSize="20sp" />
             </LinearLayout>

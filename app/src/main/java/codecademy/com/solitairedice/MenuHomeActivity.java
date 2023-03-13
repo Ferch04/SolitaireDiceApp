@@ -4,24 +4,34 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 
 public class MenuHomeActivity extends AppCompatActivity {
-    private Button button;
+    private Button bOnePlayer;
+    private Button bTwoPlayers;
 
+    private static String value;
+    public static String getValue() {
+        return value;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_home);
 
-        button = (Button)findViewById(R.id.startGame);
-        button.setOnClickListener(new View.OnClickListener() {
-                  @Override
-                  public void onClick(View view) {
-                        openGame();
-                  }
-              });
+        bOnePlayer = (Button)findViewById(R.id.onePlayer);
+        bOnePlayer.setOnClickListener(view -> OnePlayer());
+
+        bTwoPlayers = (Button)findViewById(R.id.TwoPlayers);
+        bTwoPlayers.setOnClickListener(view -> TwoPlayers());
+    }
+    private void OnePlayer() {
+        value = "OnePlayer";
+        openGame();
+    }
+    private void TwoPlayers() {
+        value = "TwoPlayers";
+        openGame();
     }
     public void openGame()
     {

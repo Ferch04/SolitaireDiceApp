@@ -6,6 +6,9 @@ import android.text.Html;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.util.Collections;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Random;
 
@@ -42,13 +45,6 @@ public class SolitaireWindow{
         CleanChoices();
         CleanDices();
     }
-    private void InsertPlayerScore(Scoring playerScore){
-        int scoreNum = 2;
-        for(TextView score : aNumbersText){
-            score.setText(playerScore.GetNumberScore(scoreNum));
-            scoreNum++;
-        }
-    }
 
     public void CleanScoring(int color){
         for (TextView score : aNumbersText){
@@ -82,7 +78,7 @@ public class SolitaireWindow{
             image.setBackground(white);
         }
     }
-    public void CleanChosenText(){
+    private void CleanChosenText(){
         aChosenText[0].setText("0");
         aChosenText[1].setText("0");
     }
@@ -152,11 +148,11 @@ public class SolitaireWindow{
     }
 
     @SuppressLint("ResourceAsColor")
-    public void SelectDice(ImageView dice, Drawable background){
+    public void SelectDice(ImageView dice){
         int diceTag = (Integer) dice.getTag();
         if (diceTag < 9) {
             dice.setTag(diceTag + 10);
-            ChoseDice(dice, diceTag, background);
+            ChoseDice(dice, diceTag);
         } else {
             dice.setTag(diceTag - 10);
             dice.setBackground(white);
@@ -167,17 +163,17 @@ public class SolitaireWindow{
     public boolean IsAllChosen(){
         return chosenDices == aChosenDices.length;
     }
-    public void ChoseDice(ImageView dice, int diceNum, Drawable background){
+    public void ChoseDice(ImageView dice, int diceNum){
         int index = 0;
         for (ImageView imChosenDice : aChosenDices) {
             if ((Integer)imChosenDice.getTag() == 0) {
 
-                // Drawable color = android.R.drawable.custom_shape;// DefineColor(index);
-                dice.setBackground(background);
+                Drawable color = DefineColor(index);
+                dice.setBackground(color);
 
                 imChosenDice.setImageDrawable(dice.getDrawable());
                 imChosenDice.setTag(diceNum);
-                imChosenDice.setBackground(background);
+                imChosenDice.setBackground(color);
                 chosenDices++;
                 break;
             }
@@ -210,14 +206,37 @@ public class SolitaireWindow{
         return color;
     }
 
+    // Todo: fill all numbers in score
+    public void InsertPlayerScore(Scoring playerScore){
+        int scoreNum = 2;
+        for(TextView score : aNumbersText){
+            score.setText(playerScore.GetNumberScore(scoreNum));
+            scoreNum++;
+        }
+    }
+    public void InsertThrowAway(Scoring playerScore){
+        if ( playerScore.IsAnyThrowAway()) {
+            Enumeration<Integer> EThrow = playerScore.GetListOfThrowAway();
+            List<Integer> throwList = Collections.list(EThrow);
+            int index = 0;
+            for (Integer throwNum : throwList) {
+                TextView throwA = aThrowsText[index];
+                throwA.setTag(throwNum);
+                throwA.setText(Html.fromHtml(playerScore.GetThrowAway(throwNum)));
+                throwA.setTextColor(black);
+                index ++;
+            }
+        }
+    }
     @SuppressLint({"ResourceAsColor", "SetTextI18n"})
-    public boolean FillNumbers( Scoring score, TextView total) {
+    public boolean FillNumbers( Scoring score, TextView total, String scoreText) {
 
         int throwAway = (Integer) aChosenDices[4].getTag();
         boolean isValid = ValidateThrowAway(throwAway, score);
 
         // Check if throw away is valid
         if (isValid) {
+            Log.d("Debuging", "Throw Away valid");
             score.AddNewNumber(chosenInt[0]);
             score.AddNewNumber(chosenInt[1]);
 
@@ -229,7 +248,7 @@ public class SolitaireWindow{
             aNumbersText[chosenInt[0] - 2].setTextColor(black);
             aNumbersText[chosenInt[1] - 2].setTextColor(black);
 
-            total.setText("Total : " + score.TotalScore());
+            total.setText(scoreText + score.TotalScore());
 
             FillThrowAway(score);
         }

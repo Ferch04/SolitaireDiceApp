@@ -44,6 +44,8 @@ public class Scoring {
     }
 
     Hashtable<Integer, Score> hasScore = new Hashtable<>();
+    // Integer number of throw away
+    // Throw { count , string text }
     Hashtable<Integer, Throw> hashThrowAway = new Hashtable<>();
     ScoreState state;
 
@@ -80,6 +82,13 @@ public class Scoring {
     private void ClearScore(){
         hashThrowAway.clear();
         hasScore.clear();
+    }
+
+    public boolean IsAnyThrowAway(){
+        return hashThrowAway.size() != 0;
+    }
+    public Enumeration<Integer> GetListOfThrowAway(){
+        return hashThrowAway.keys();
     }
 
     public String GetThrowAway(int num){
@@ -139,6 +148,7 @@ public class Scoring {
 
         return added;
     }
+
     public void AddNewNumber(int num){
         if( 2 <= num && num <= 12 ) {
             Score auxScore = hasScore.get(num);
@@ -146,7 +156,7 @@ public class Scoring {
         }
     }
     public String GetNumberScore(int num){
-        return String.valueOf(hasScore.get(num));
+        return String.valueOf(hasScore.get(num).Count);
     }
 
     private void DefineState(){
