@@ -1,4 +1,4 @@
-package codecademy.com.solitairedice;
+package myFirstApp.com.solitairedice;
 
 import org.junit.Test;
 

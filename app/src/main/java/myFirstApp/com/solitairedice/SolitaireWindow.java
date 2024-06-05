@@ -1,4 +1,4 @@
-package codecademy.com.solitairedice;
+package myFirstApp.com.solitairedice;
 
 import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
@@ -9,8 +9,8 @@ import android.widget.TextView;
 import java.util.List;
 import java.util.Random;
 
-import static codecademy.com.solitairedice.R.color.gray_99;
-import static codecademy.com.solitairedice.R.color.black;
+import static myFirstApp.com.solitairedice.R.color.gray_99;
+import static myFirstApp.com.solitairedice.R.color.black;
 
 public class SolitaireWindow{
     List<Integer> aDicesInt;
