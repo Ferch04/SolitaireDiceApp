@@ -1,4 +1,4 @@
-package codecademy.com.solitairedice;
+package myFirstApp.com.solitairedice;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -21,8 +21,8 @@ import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 import java.util.ArrayList;
 
-import static codecademy.com.solitairedice.R.color.black_1;
-import static codecademy.com.solitairedice.R.color.gray_99;
+import static myFirstApp.com.solitairedice.R.color.black_1;
+import static myFirstApp.com.solitairedice.R.color.gray_99;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {

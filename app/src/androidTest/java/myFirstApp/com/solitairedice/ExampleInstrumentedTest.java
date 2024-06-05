@@ -1,4 +1,4 @@
-package codecademy.com.solitairedice;
+package myFirstApp.com.solitairedice;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("codecademy.com.solitairedice", appContext.getPackageName());
+        assertEquals("myFirstApp.com.solitairedice", appContext.getPackageName());
     }
 }
