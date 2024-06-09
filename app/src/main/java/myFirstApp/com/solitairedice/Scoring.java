@@ -96,6 +96,11 @@ public class Scoring {
         assert aux_throw != null;
         return aux_throw.text;
     }
+    public int GetThrowAwayNum(int num){
+        Throw aux_throw = hashThrowAway.get(num);
+        assert aux_throw != null;
+        return aux_throw.count;
+    }
     public int GetCount(int num){
         return (Objects.requireNonNull(hasScore.get(num))).Count;
     }
