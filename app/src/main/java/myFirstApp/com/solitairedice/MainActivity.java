@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     TextView totalScore, totalScore2 ;
     Button roll;
+    Button clearDices;
     SolitaireWindow window;
     boolean TwoPlayers = false;
     player currentPlayer;
@@ -93,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         totalScore2 = findViewById(R.id.textTotalScore2);
 
         roll  = findViewById(R.id.rollDices);
+        clearDices = findViewById(R.id.clearDices);
         final ImageView diceOne = findViewById(R.id.DiceOne);
         final ImageView diceTwo = findViewById(R.id.DiceTwo);
         final ImageView diceThree = findViewById(R.id.DiceThree);
@@ -149,6 +151,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         scorePlayerOne = new Scoring();
         scorePlayerOne.NewScore();
 
+        clearDices.setVisibility(View.INVISIBLE);
+
+        clearDices.setOnClickListener(this);
         roll.setOnClickListener(this);
         diceOne.setOnClickListener(this);
         diceTwo.setOnClickListener(this);
@@ -186,6 +191,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.rollDices:
                 RollDicesMain(window);
                 break;
+            case R.id.clearDices:
+                window.ClearAllDices();
+                currentState = rollState.Rolled;
+                break;
             case R.id.DiceOne:
             case R.id.DiceTwo:
             case R.id.DiceThree:
@@ -195,6 +204,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         currentState == MainActivity.rollState.Chosen ) {
                     window.SelectDice(findViewById(v.getId()));
                     SetEnableRoll();
+                    clearDices.setEnabled(true);
                 }
                 break;
         }
@@ -207,6 +217,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 RollDiceStatus(false);
                 sWindow.RollDicesNow(scorePlayerOne);
                 roll.setText("Play & Roll");
+                clearDices.setVisibility(View.VISIBLE);
+                clearDices.setEnabled(false);
                 currentState = rollState.Rolled;
                 break;
             case Chosen:
@@ -235,6 +247,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 scorePlayerOne.NewScore();
                 totalScore.setText("Total: ");
                 roll.setText("Roll");
+                clearDices.setVisibility(View.INVISIBLE);
                 currentState = rollState.Idle;
                 break;
             case StartGame:
@@ -393,6 +406,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void SetEnableRoll(){
+        clearDices.setEnabled(true);
         if (window.IsAllChosen()){
             RollDiceStatus(true);
             currentState = MainActivity.rollState.Chosen;

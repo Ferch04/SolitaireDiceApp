@@ -147,6 +147,17 @@ public class SolitaireWindow{
         }
     }
 
+    public void ClearAllDices()
+    {
+        for( ImageView dice : aDices)
+        {
+            int diceTag = (Integer) dice.getTag();
+            if (diceTag >= 9) {
+                SelectDice(dice);
+            }
+        }
+        // CleanChosenText();
+    }
     @SuppressLint("ResourceAsColor")
     public void SelectDice(ImageView dice){
         int diceTag = (Integer) dice.getTag();
