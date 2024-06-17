@@ -3,13 +3,13 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 34
     buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "myFirstApp.com.solitairedice"
         minSdkVersion 16
-        targetSdkVersion 30
+        targetSdkVersion 33\
         versionCode 1
         versionName "0.6"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

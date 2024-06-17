@@ -3,7 +3,6 @@ package myFirstApp.com.solitairedice;
 import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
 import android.text.Html;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,6 +26,8 @@ public class SolitaireWindow{
     boolean freeThrow = false;
     int chosenDices;
     Random random = new Random();
+    int THROW_AWAY = 4;
+
 
     // colors
     Drawable purple;
@@ -44,6 +45,13 @@ public class SolitaireWindow{
     public void EndingGame(){
         CleanChoices();
         CleanDices();
+    }
+    private void InsertPlayerScore(Scoring playerScore){
+        int scoreNum = 2;
+        for(TextView score : aNumbersText){
+            score.setText(playerScore.GetNumberScore(scoreNum));
+            scoreNum++;
+        }
     }
 
     public void CleanScoring(int color){
@@ -140,11 +148,16 @@ public class SolitaireWindow{
             // if at lease on throw away its founded
             // free throw should be false, otherwise it will be true
             if(!throwFounded) {
-                freeThrow = true;
-                Log.d("fercho", "free throw");
-                // todo: Toast.makeText(this, "Free throw", Toast.LENGTH_LONG).show();
+                FreeThrowaway();
             }
         }
+    }
+    public void FreeThrowaway(){
+        freeThrow = true;
+        aChosenDices[THROW_AWAY].setImageResource(R.drawable.baseline_celebration_24);
+        aChosenDices[THROW_AWAY].setTag(7);
+        aChosenDices[THROW_AWAY].setBackground(purple);
+        chosenDices++;
     }
 
     public void ClearAllDices()
@@ -178,7 +191,6 @@ public class SolitaireWindow{
         int index = 0;
         for (ImageView imChosenDice : aChosenDices) {
             if ((Integer)imChosenDice.getTag() == 0) {
-
                 Drawable color = DefineColor(index);
                 dice.setBackground(color);
 
@@ -247,7 +259,6 @@ public class SolitaireWindow{
 
         // Check if throw away is valid
         if (isValid) {
-            Log.d("Debuging", "Throw Away valid");
             score.AddNewNumber(chosenInt[0]);
             score.AddNewNumber(chosenInt[1]);
 

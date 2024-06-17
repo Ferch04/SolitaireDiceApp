@@ -7,6 +7,9 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.os.Build;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -14,7 +17,10 @@ import android.view.View;
 import android.widget.Button;
 
 import android.os.Bundle;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -231,6 +237,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if (scorePlayerOne.state != Scoring.ScoreState.Finish){
                         sWindow.RollDicesNow(scorePlayerOne);
                         currentState = rollState.Rolled;
+                        if (sWindow.freeThrow)
+                        {
+                            freeThrowAwayPopup();
+                            // Toast.makeText(this, "Free throw", Toast.LENGTH_LONG).show();
+                        }
                     }
                     else{
                         EndingGame(sWindow);
@@ -260,6 +271,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
     }
+
+    private void freeThrowAwayPopup() {
+
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        // create the popup window
+        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+
+        View popupView = inflater.inflate(R.layout.free_throw_menu, null);
+        boolean focusable = true; // lets taps outside the popup also dismiss it
+        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            popupWindow.setElevation(20);
+        }
+
+        popupWindow.showAtLocation(findViewById(R.id.DiceFour),
+                Gravity.CENTER,
+                0,
+                0);
+    }
+
     @SuppressLint({"UseCompatLoadingForDrawables", "SetTextI18n"})
 
     public void SwapPlayer(Scoring scorePlayer, SolitaireWindow sWindow){
@@ -435,7 +468,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void ShowEndOfGame(){
         String scoreText = "";
         if(newHighScore){
-            scoreText = "New best score!";
+            scoreText = "\nNew best score!\n";
             newHighScore = false;
         }
         scoreText += "\nScore: " + scoring.TotalScore();
