@@ -3,9 +3,9 @@ package myFirstApp.com.solitairedice;
 import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
 import android.text.Html;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import java.util.List;
 import java.util.Random;
 
@@ -24,6 +24,8 @@ public class SolitaireWindow{
     boolean freeThrow = false;
     int chosenDices;
     Random random = new Random();
+    int THROW_AWAY = 4;
+
 
     // colors
     Drawable purple;
@@ -144,11 +146,16 @@ public class SolitaireWindow{
             // if at lease on throw away its founded
             // free throw should be false, otherwise it will be true
             if(!throwFounded) {
-                freeThrow = true;
-                Log.d("fercho", "free throw");
-                // todo: Toast.makeText(this, "Free throw", Toast.LENGTH_LONG).show();
+                FreeThrowaway();
             }
         }
+    }
+    public void FreeThrowaway(){
+        freeThrow = true;
+        aChosenDices[THROW_AWAY].setImageResource(R.drawable.baseline_celebration_24);
+        aChosenDices[THROW_AWAY].setTag(7);
+        aChosenDices[THROW_AWAY].setBackground(purple);
+        chosenDices++;
     }
 
     public void ClearAllDices()
