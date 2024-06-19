@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.util.Log;
 import android.os.Build;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -20,11 +19,7 @@ import android.os.Bundle;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 import java.util.ArrayList;
 
 import static myFirstApp.com.solitairedice.R.color.black_1;
@@ -36,6 +31,7 @@ import org.json.JSONObject;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     Scoring scorePlayerOne;
     Scoring scorePlayerTwo;
+    private boolean newHighScore;
 
     enum player{
         One,
@@ -159,7 +155,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         scorePlayerOne.NewScore();
 
         clearDices.setVisibility(View.INVISIBLE);
-
         clearDices.setOnClickListener(this);
         roll.setOnClickListener(this);
         diceOne.setOnClickListener(this);
@@ -240,7 +235,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         if (sWindow.freeThrow)
                         {
                             freeThrowAwayPopup();
-                            // Toast.makeText(this, "Free throw", Toast.LENGTH_LONG).show();
                         }
                     }
                     else{
@@ -349,6 +343,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 RollDiceStatus(false);
                 sWindow.RollDicesNow(CurrentPlayer());
                 roll.setText("Play & Roll");
+                clearDices.setVisibility(View.VISIBLE);
                 currentState = rollState.Rolled;
                 break;
             case Chosen:
@@ -419,8 +414,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void EndingGame(SolitaireWindow sWindow){
         sWindow.EndingGame();
         RollDiceStatus(false);
-        ShowMessage("End of Game" +
-                "\nScore: " + scorePlayerOne.TotalScore());
         roll.setText("Start");
         RollDiceStatus(true);
         SaveHighestScore();
@@ -439,6 +432,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         roll.setText("Start");
         RollDiceStatus(true);
 
+        clearDices.setVisibility(View.INVISIBLE);
         currentState = rollState.EndGame;
     }
 
@@ -471,7 +465,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             scoreText = "\nNew best score!\n";
             newHighScore = false;
         }
-        scoreText += "\nScore: " + scoring.TotalScore();
+        scoreText += "\nScore: " + scorePlayerOne.TotalScore();
         ShowMessage("End of Game" + scoreText);
     }
     public void ShowMessage(String message){
@@ -481,40 +475,44 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 (dialog, which) -> dialog.dismiss());
         alert.show();
     }
+    public Scoring DefineWinner(){
+        if(TwoPlayers){
+            if(scorePlayerOne.IntTotalScore() < scorePlayerTwo.IntTotalScore()){
+                return scorePlayerTwo;
+            }
+        }
+        return scorePlayerOne;
+    }
     public void SaveHighestScore(){
-        // shared preferences. todo: encryptedSharedPreferences
         SharedPreferences highScore =
                 getApplicationContext().getSharedPreferences("ScoreHistory", MODE_PRIVATE);
         SharedPreferences.Editor editor = highScore.edit();
 
         int last_high_score = highScore.getInt("High", 0);
-        if(scoring.IntTotalScore() > last_high_score ) {
+        Scoring winner = DefineWinner();
+
+        if(winner.IntTotalScore() > last_high_score ) {
             newHighScore = true;
             try{
                 JSONObject jsonObject = new JSONObject();
-                jsonObject.put("Highest Score",  String.valueOf(scoring.IntTotalScore()));
+                jsonObject.put("Highest Score",  String.valueOf(winner.IntTotalScore()));
 
                 // Save all dices count
                 for( int i = 2; i<= 12; i ++){
-                    jsonObject.put(String.valueOf(i), String.valueOf(scoring.GetCount(i)) );
+                    jsonObject.put(String.valueOf(i), String.valueOf(winner.GetCount(i)) );
                 }
                 // Save all throw away count
                 for( int j = 1; j<= 6; j ++) {
-                    if (scoring.IsThrowAway(j)) {
+                    if (winner.IsThrowAway(j)) {
                         String ValueNum = String.valueOf(j);
-                        jsonObject.put("Throw Away " + ValueNum, String.valueOf(scoring.GetThrowAwayNum(j)));
+                        jsonObject.put("Throw Away " + ValueNum, String.valueOf(winner.GetThrowAwayNum(j)));
                     }
                 }
                 editor.putString("high_score", jsonObject.toString()).commit();
             }catch (JSONException json){
                 // Something got wrong
             }
-            /*
-                    if(scorePlayerOne.IntTotalScore() > last_high_score ) {
-                    editor.putInt("High", scorePlayerOne.IntTotalScore());
-                    editor.apply();
-                }
-             */
+
             editor.apply();
         }
     }

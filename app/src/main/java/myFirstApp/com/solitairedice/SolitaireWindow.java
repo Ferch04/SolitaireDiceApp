@@ -46,7 +46,7 @@ public class SolitaireWindow{
         CleanChoices();
         CleanDices();
     }
-    private void InsertPlayerScore(Scoring playerScore){
+    public void InsertPlayerScore(Scoring playerScore){
         int scoreNum = 2;
         for(TextView score : aNumbersText){
             score.setText(playerScore.GetNumberScore(scoreNum));
@@ -228,15 +228,7 @@ public class SolitaireWindow{
         }
         return color;
     }
-
-    // Todo: fill all numbers in score
-    public void InsertPlayerScore(Scoring playerScore){
-        int scoreNum = 2;
-        for(TextView score : aNumbersText){
-            score.setText(playerScore.GetNumberScore(scoreNum));
-            scoreNum++;
-        }
-    }
+    @SuppressLint("ResourceAsColor")
     public void InsertThrowAway(Scoring playerScore){
         if ( playerScore.IsAnyThrowAway()) {
             Enumeration<Integer> EThrow = playerScore.GetListOfThrowAway();

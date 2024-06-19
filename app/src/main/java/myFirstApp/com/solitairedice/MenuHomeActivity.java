@@ -1,7 +1,8 @@
-package codecademy.com.solitairedice;
+package myFirstApp.com.solitairedice;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -14,15 +15,16 @@ public class MenuHomeActivity extends AppCompatActivity {
     public static String getValue() {
         return value;
     }
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu_home);
+        setContentView(R.layout.menu_home_activity);
 
         bOnePlayer = (Button)findViewById(R.id.onePlayer);
         bOnePlayer.setOnClickListener(view -> OnePlayer());
 
-        bTwoPlayers = (Button)findViewById(R.id.TwoPlayers);
+        bTwoPlayers = (Button)findViewById(R.id.multiPlayers);
         bTwoPlayers.setOnClickListener(view -> TwoPlayers());
     }
     private void OnePlayer() {
