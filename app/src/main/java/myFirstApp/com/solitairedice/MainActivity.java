@@ -225,10 +225,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 currentState = rollState.Rolled;
                 break;
             case Chosen:
-                if(sWindow.FillNumbers(scorePlayerOne, totalScore, ScoreText)){
+                if(sWindow.FillNumbers(this, scorePlayerOne, totalScore, ScoreText)){
                     sWindow.CleanChoices();
                     RollDiceStatus(false);
-                    // Todo: Swap players score
                     if (scorePlayerOne.state != Scoring.ScoreState.Finish){
                         sWindow.RollDicesNow(scorePlayerOne);
                         currentState = rollState.Rolled;
@@ -257,7 +256,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 currentState = rollState.Idle;
                 break;
             case StartGame:
-                sWindow.CleanScoring(getResources().getColor(R.color.gray_99));
+                sWindow.CleanScoring();
                 roll.setText("Roll");
                 currentState = rollState.Idle;
                 break;
@@ -293,7 +292,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         sWindow.CleanThrowAway();
         sWindow.CleanDices();
         sWindow.CleanChoices();
-        sWindow.CleanScoring(getResources().getColor(R.color.gray_99));
+        sWindow.CleanScoring();
 
         sWindow.InsertPlayerScore(scorePlayer);
         sWindow.InsertThrowAway(scorePlayer);
@@ -335,6 +334,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return curPlayer;
     }
 
+    @SuppressLint("SetTextI18n")
     public void StateMachineTwoPlayers(SolitaireWindow sWindow){
 
          switch (currentState){
@@ -355,7 +355,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     scoreText = totalScore;
                 }
 
-                if(sWindow.FillNumbers(currentScore, scoreText, ScoreText)){
+                if(sWindow.FillNumbers(this, currentScore, scoreText, ScoreText)){
                     if ((GetNextPlayer()).state == Scoring.ScoreState.Finish){
                         if (currentScore.state != Scoring.ScoreState.Finish){
                             currentState = rollState.Idle;
@@ -394,7 +394,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 currentState = rollState.StartGame;
                 break;
             case StartGame:
-                sWindow.CleanScoring(getResources().getColor(R.color.gray_99));
+                sWindow.CleanScoring();
                 sWindow.CleanThrowAway();
                 roll.setText("Roll");
                 currentState = rollState.Idle;
@@ -410,7 +410,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             StateMachineOnePlayer(sWindow);
         }
     }
-    @SuppressLint("UseCompatLoadingForDrawables")
+    @SuppressLint({"UseCompatLoadingForDrawables", "SetTextI18n"})
     public void EndingGame(SolitaireWindow sWindow){
         sWindow.EndingGame();
         RollDiceStatus(false);
@@ -422,7 +422,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         clearDices.setVisibility(View.INVISIBLE);
         currentState = rollState.EndGame;
     }
-    @SuppressLint("UseCompatLoadingForDrawables")
+    @SuppressLint({"UseCompatLoadingForDrawables", "SetTextI18n"})
     public void EndingGameTwoPlayers(SolitaireWindow sWindow){
         sWindow.EndingGame();
         RollDiceStatus(false);

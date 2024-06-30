@@ -1,6 +1,10 @@
 package myFirstApp.com.solitairedice;
 
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.text.Html;
 import android.widget.ImageView;
@@ -10,9 +14,6 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Random;
-
-import static myFirstApp.com.solitairedice.R.color.gray_99;
-import static myFirstApp.com.solitairedice.R.color.black;
 
 public class SolitaireWindow{
     List<Integer> aDicesInt;
@@ -36,7 +37,7 @@ public class SolitaireWindow{
     Drawable white;
 
     public void EndGame(){
-        CleanScoring(R.color.gray_99);
+        CleanScoring();
         CleanThrowAway();
         CleanChosenText();
         chosenDices = 0;
@@ -54,17 +55,22 @@ public class SolitaireWindow{
         }
     }
 
-    public void CleanScoring(int color){
+    public void CleanScoring(){
         for (TextView score : aNumbersText){
             score.setText("");
-            score.setTextColor(color);
+            score.setTextColor(Color.GRAY);
+        }
+    }
+    public void GrayScoring(){
+        for (TextView score : aNumbersText){
+            score.setTextColor(Color.BLACK);
         }
     }
     @SuppressLint({"ResourceAsColor", "DefaultLocale"})
     public void CleanThrowAway(){
         int i = 1;
         for(TextView t_away : aThrowsText){
-            t_away.setTextColor(gray_99);
+            t_away.setTextColor(Color.GRAY);
             t_away.setText(String.format("Throw away %d", i));
             t_away.setTag(0);
             i++;
@@ -209,7 +215,6 @@ public class SolitaireWindow{
             if (imChosenDice.getDrawable() == diceImage) {
                 imChosenDice.setImageResource(android.R.drawable.gallery_thumb);
                 imChosenDice.setTag(0);
-
                 imChosenDice.setBackground(white);
                 chosenDices--;
                 break;
@@ -228,7 +233,6 @@ public class SolitaireWindow{
         }
         return color;
     }
-    @SuppressLint("ResourceAsColor")
     public void InsertThrowAway(Scoring playerScore){
         if ( playerScore.IsAnyThrowAway()) {
             Enumeration<Integer> EThrow = playerScore.GetListOfThrowAway();
@@ -238,39 +242,44 @@ public class SolitaireWindow{
                 TextView throwA = aThrowsText[index];
                 throwA.setTag(throwNum);
                 throwA.setText(Html.fromHtml(playerScore.GetThrowAway(throwNum)));
-                throwA.setTextColor(black);
+                throwA.setTextColor(Color.BLACK);
                 index ++;
             }
         }
     }
     @SuppressLint({"ResourceAsColor", "SetTextI18n"})
-    public boolean FillNumbers( Scoring score, TextView total, String scoreText) {
+    public boolean FillNumbers( Context context, Scoring score, TextView total, String scoreText) {
 
         int throwAway = (Integer) aChosenDices[4].getTag();
         boolean isValid = ValidateThrowAway(throwAway, score);
 
         // Check if throw away is valid
         if (isValid) {
-            score.AddNewNumber(chosenInt[0]);
-            score.AddNewNumber(chosenInt[1]);
+            GrayScoring();
 
-            aNumbersText[chosenInt[0] - 2].setText(String.valueOf(
-                     score.GetCount(chosenInt[0])));
-            aNumbersText[chosenInt[1] - 2].setText(String.valueOf(
-                     score.GetCount(chosenInt[1])));
-
-            aNumbersText[chosenInt[0] - 2].setTextColor(black);
-            aNumbersText[chosenInt[1] - 2].setTextColor(black);
+            FillNumber(context, score, chosenInt[0]);
+            FillNumber(context, score, chosenInt[1]);
 
             total.setText(scoreText + score.TotalScore());
-
             FillThrowAway(score);
         }
 
         return isValid;
     }
-    @SuppressLint("ResourceAsColor")
-    private void FillThrowAway( Scoring score){
+    private void FillNumber(Context context, Scoring score, int scoreNum ){
+        score.AddNewNumber(scoreNum);
+        aNumbersText[scoreNum - 2].setText(String.valueOf(score.GetCount(scoreNum)));
+        RunAnimation(context, aNumbersText[scoreNum - 2]);
+    }
+    private void RunAnimation(Context context, TextView txt)
+    {
+        AnimatorSet set = (AnimatorSet) AnimatorInflater.loadAnimator(context,
+                R.animator.property_animator);
+        set.setTarget(txt);
+        set.start();
+    }
+
+    private void FillThrowAway(Scoring score){
         int num = (Integer) aChosenDices[4].getTag();
 
         for(TextView throwA: aThrowsText){
@@ -282,7 +291,7 @@ public class SolitaireWindow{
             }else if( tag == 0){
                 throwA.setTag(num);
                 throwA.setText(score.GetThrowAway(num));
-                throwA.setTextColor(black);
+                throwA.setTextColor(Color.BLACK);
                 break;
             }
         }
