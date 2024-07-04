@@ -85,7 +85,7 @@ public class Scoring {
     }
 
     public boolean IsAnyThrowAway(){
-        return hashThrowAway.size() != 0;
+        return !hashThrowAway.isEmpty();
     }
     public Enumeration<Integer> GetListOfThrowAway(){
         return hashThrowAway.keys();
@@ -161,13 +161,13 @@ public class Scoring {
         }
     }
     public String GetNumberScore(int num){
-        return String.valueOf(hasScore.get(num).Count);
+        return String.valueOf(Objects.requireNonNull(hasScore.get(num)).Count);
     }
 
     private void DefineState(){
         switch (state){
             case Starting:
-                if(hashThrowAway.size() > 0){
+                if(!hashThrowAway.isEmpty()){
                     state = ScoreState.ChoosingThrowAway;
                 }
                 break;

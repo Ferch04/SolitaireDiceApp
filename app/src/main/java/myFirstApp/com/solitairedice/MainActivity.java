@@ -3,12 +3,12 @@ package myFirstApp.com.solitairedice;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -16,11 +16,10 @@ import android.view.View;
 import android.widget.Button;
 
 import android.os.Bundle;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import static myFirstApp.com.solitairedice.R.color.black_1;
 import static myFirstApp.com.solitairedice.R.color.gray_99;
@@ -47,18 +46,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     rollState currentState = rollState.StartGame;
 
-    TextView totalScore, totalScore2 ;
+    TextView totalScore, totalScore2, scoreInt1, scoreInt2;
     Button roll;
     Button clearDices;
     SolitaireWindow window;
     boolean TwoPlayers = false;
     player currentPlayer;
+    Scoring currentScore;
 
     // todo: improve this
     String SinglePlayerScoreText = "Total: ";
     String playerOneScoreText = "Player 1: ";
     String playerTwoScoreText = "Player 2: ";
-    String ScoreText;
 
     @Override
     public boolean onCreateOptionsMenu(android.view.Menu menu) {
@@ -95,6 +94,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // region final definition
         totalScore = findViewById(R.id.textTotalScore);
         totalScore2 = findViewById(R.id.textTotalScore2);
+        scoreInt1 = findViewById(R.id.count_score);
+        scoreInt2 = findViewById(R.id.count_score2);
 
         roll  = findViewById(R.id.rollDices);
         clearDices = findViewById(R.id.clearDices);
@@ -175,15 +176,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             currentPlayer = player.One;
             scorePlayerTwo = new Scoring();
             scorePlayerTwo.NewScore();
-            ScoreText = playerOneScoreText;
             TextView textCurPlayer = findViewById(R.id.textCurrentPlayer);
             textCurPlayer.setText("Player One");
         }
         else {
             totalScore2.setEnabled(false);
             totalScore2.setVisibility(TextView.INVISIBLE);
-            totalScore.setText(ScoreText);
-            ScoreText = SinglePlayerScoreText;
+            totalScore.setText(SinglePlayerScoreText);
         }
     }
     @SuppressLint({"NonConstantResourceId", "UseCompatLoadingForDrawables"})
@@ -225,7 +224,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 currentState = rollState.Rolled;
                 break;
             case Chosen:
-                if(sWindow.FillNumbers(this, scorePlayerOne, totalScore, ScoreText)){
+                int current_score = sWindow.GetTotalScore(scorePlayerOne);
+                if(sWindow.FillNumbers(this, scorePlayerOne)){
+
+                    UpdateTotalScore(current_score, sWindow, scoreInt1);
+
                     sWindow.CleanChoices();
                     RollDiceStatus(false);
                     if (scorePlayerOne.state != Scoring.ScoreState.Finish){
@@ -264,26 +267,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
     }
-
+    private void UpdateTotalScore(int current_score, SolitaireWindow sWindow, TextView countScore){
+        ValueAnimator animator = ValueAnimator.ofInt(current_score, sWindow.GetTotalScore(scorePlayerOne) );
+        animator.setDuration(500);
+        animator.addUpdateListener(animation -> countScore.setText(animation.getAnimatedValue().toString()));
+        animator.start();
+    }
     private void freeThrowAwayPopup() {
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.free_throw_menu);
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(null);
+        dialog.getWindow().setWindowAnimations(R.style.DialogAnim);
 
-        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        // create the popup window
-        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
-        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
-
-        View popupView = inflater.inflate(R.layout.free_throw_menu, null);
-        boolean focusable = true; // lets taps outside the popup also dismiss it
-        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            popupWindow.setElevation(20);
-        }
-
-        popupWindow.showAtLocation(findViewById(R.id.DiceFour),
-                Gravity.CENTER,
-                0,
-                0);
+        dialog.show();
     }
 
     @SuppressLint({"UseCompatLoadingForDrawables", "SetTextI18n"})
@@ -303,12 +299,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (currentPlayer == player.One){
             nextPlayer = scorePlayerTwo;
             currentPlayer = player.Two;
-            ScoreText = playerTwoScoreText;
             playerName = "Player Two";
         }else{
             nextPlayer = scorePlayerOne;
             currentPlayer = player.One;
-            ScoreText = playerOneScoreText;
             playerName = "Player One";
         }
         TextView textCurPlayer = findViewById(R.id.textCurrentPlayer);
@@ -347,15 +341,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 currentState = rollState.Rolled;
                 break;
             case Chosen:
-                Scoring currentScore = CurrentPlayer();
+                currentScore = CurrentPlayer();
 
                 // todo: improve this
-                TextView scoreText = totalScore2;
+                TextView scoreText = scoreInt2;
                 if (currentPlayer == player.One){
-                    scoreText = totalScore;
+                    scoreText = scoreInt1;
                 }
 
-                if(sWindow.FillNumbers(this, currentScore, scoreText, ScoreText)){
+                int current_score = sWindow.GetTotalScore(currentScore);
+
+                if(sWindow.FillNumbers(this, currentScore)){
+                    UpdateTotalScore(current_score, sWindow, scoreText);
+
                     if ((GetNextPlayer()).state == Scoring.ScoreState.Finish){
                         if (currentScore.state != Scoring.ScoreState.Finish){
                             currentState = rollState.Idle;
@@ -473,6 +471,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         alert.setMessage(message);
         alert.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                 (dialog, which) -> dialog.dismiss());
+        Objects.requireNonNull(alert.getWindow()).setWindowAnimations(R.style.DialogAnim);
         alert.show();
     }
     public Scoring DefineWinner(){

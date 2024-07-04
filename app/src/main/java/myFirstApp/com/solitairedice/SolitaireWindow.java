@@ -248,7 +248,7 @@ public class SolitaireWindow{
         }
     }
     @SuppressLint({"ResourceAsColor", "SetTextI18n"})
-    public boolean FillNumbers( Context context, Scoring score, TextView total, String scoreText) {
+    public boolean FillNumbers( Context context, Scoring score) {
 
         int throwAway = (Integer) aChosenDices[4].getTag();
         boolean isValid = ValidateThrowAway(throwAway, score);
@@ -259,12 +259,14 @@ public class SolitaireWindow{
 
             FillNumber(context, score, chosenInt[0]);
             FillNumber(context, score, chosenInt[1]);
-
-            total.setText(scoreText + score.TotalScore());
             FillThrowAway(score);
         }
 
         return isValid;
+    }
+    public int GetTotalScore(Scoring score)
+    {
+        return score.IntTotalScore();
     }
     private void FillNumber(Context context, Scoring score, int scoreNum ){
         score.AddNewNumber(scoreNum);
