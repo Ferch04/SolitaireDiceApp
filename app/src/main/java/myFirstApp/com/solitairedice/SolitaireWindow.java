@@ -22,6 +22,9 @@ public class SolitaireWindow{
     TextView[] aChosenText;
     TextView[] aNumbersText;
     TextView[] aThrowsText;
+    Drawable backgroundBlue;
+    Drawable backgroundPurple;
+    Drawable backgroundBlack;
     int[] chosenInt;
     int[] dices;
     boolean freeThrow = false;
@@ -31,9 +34,6 @@ public class SolitaireWindow{
 
 
     // colors
-    Drawable purple;
-    Drawable bblack;
-    Drawable teal;
     Drawable white;
 
     public void EndGame(){
@@ -162,7 +162,7 @@ public class SolitaireWindow{
         freeThrow = true;
         aChosenDices[THROW_AWAY].setImageResource(R.drawable.baseline_celebration_24);
         aChosenDices[THROW_AWAY].setTag(7);
-        aChosenDices[THROW_AWAY].setBackground(purple);
+        aChosenDices[THROW_AWAY].setBackground(backgroundPurple);
         chosenDices++;
     }
 
@@ -224,12 +224,12 @@ public class SolitaireWindow{
 
 
     private Drawable DefineColor(int index){
-        Drawable color = bblack;
+        Drawable color = backgroundBlack;
 
         if(index < 2 ){
-            color = teal;
+            color = backgroundPurple;
         } else if (index < 4){
-            color = purple;
+            color = backgroundBlue;
         }
         return color;
     }

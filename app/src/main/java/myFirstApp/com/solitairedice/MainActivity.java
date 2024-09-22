@@ -144,12 +144,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         window.CleanThrowAway();
         window.CleanDices();
         window.chosenDices = 0;
-        window.dices = new int[] {R.drawable.dice1, R.drawable.dice2, R.drawable.dice3,  R.drawable.dice4,
-                R.drawable.dice5, R.drawable.dice6 };
-        window.purple = getResources().getDrawable(R.color.purple_700);
-        window.bblack = getResources().getDrawable(R.color.black);
-        window.teal = getResources().getDrawable(R.color.teal_700);
+        window.dices = new int[] {R.drawable.dice_one, R.drawable.dice_two, R.drawable.dice_three,  R.drawable.dice_four,
+                R.drawable.dice_five, R.drawable.dice_six};
         window.white = getResources().getDrawable(R.color.white);
+        window.backgroundBlue = getResources().getDrawable(R.drawable.rounded_blue);
+        window.backgroundPurple = getResources().getDrawable(R.drawable.rounded_purple);
+        window.backgroundBlack = getResources().getDrawable(R.drawable.rounded_black);
         // endregion
 
         scorePlayerOne = new Scoring();
@@ -507,7 +507,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         jsonObject.put("Throw Away " + ValueNum, String.valueOf(winner.GetThrowAwayNum(j)));
                     }
                 }
-                editor.putString("high_score", jsonObject.toString()).commit();
+                editor.putString("high_score", jsonObject.toString()).apply();
             }catch (JSONException json){
                 // Something got wrong
             }

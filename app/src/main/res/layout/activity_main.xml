@@ -29,17 +29,18 @@
             android:shadowColor="#453F3F"
             android:text="Throwaway: "
             android:textColor="#120D0D"
-            android:textSize="16sp"
-            android:visibility="visible" />
+            android:textSize="20sp"
+            android:visibility="visible"
+            tools:ignore="HardcodedText" />
 
         <ImageView
             android:id="@+id/numThrowaway"
             android:layout_width="30dp"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_marginStart="9dp"
             android:layout_marginLeft="9dp"
             android:layout_weight="1"
-            android:padding="3dp"
+            android:clipToOutline="true"
             android:tag="0"
             app:srcCompat="@android:drawable/gallery_thumb" />
 
@@ -61,36 +62,35 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:layout_marginRight="4dp"
             android:layout_weight="1"
             android:shadowColor="#453F3F"
             android:text="Number 2: "
             android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textSize="20sp"
             android:visibility="visible" />
 
         <ImageView
             android:id="@+id/numTwoOne"
             android:layout_width="30dp"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_marginStart="20dp"
             android:layout_marginLeft="20dp"
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
-            android:layout_weight="1"
-            android:padding="3dp"
+            android:clipToOutline="true"
             android:tag="0"
             app:srcCompat="@android:drawable/gallery_thumb" />
 
         <ImageView
             android:id="@+id/numTwoTwo"
             android:layout_width="30dp"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_marginStart="2dp"
             android:layout_marginLeft="2dp"
             android:layout_marginEnd="2dp"
             android:layout_marginRight="2dp"
-            android:layout_weight="1"
-            android:padding="3dp"
+            android:clipToOutline="true"
             android:tag="0"
             app:srcCompat="@android:drawable/gallery_thumb" />
 
@@ -98,19 +98,21 @@
             android:id="@+id/textChoseTwo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginLeft="4dp"
             android:layout_marginTop="4dp"
             android:layout_weight="1"
             android:text="0"
+            android:textSize="20sp"
             android:textColor="@color/black" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/LayoutRolledDices"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_marginBottom="10dp"
+        android:layout_height="70dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="10dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/LayoutNumberOne"
         app:layout_constraintEnd_toEndOf="parent"
@@ -118,73 +120,60 @@
 
         <ImageView
             android:id="@+id/DiceOne"
-            android:layout_width="55dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginLeft="4dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:background="@color/white"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
             android:clickable="true"
-            android:cropToPadding="true"
-            android:padding="3dp"
+            android:clipToOutline="true"
+            android:focusable="true"
+            android:longClickable="false"
             app:srcCompat="@android:drawable/gallery_thumb" />
 
         <ImageView
             android:id="@+id/DiceTwo"
-            android:layout_width="55dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginLeft="4dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:background="@color/white"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
             android:clickable="true"
-            android:cropToPadding="true"
-            android:padding="3dp"
+            android:focusable="true"
+            android:clipToOutline="true"
+            android:longClickable="false"
             app:srcCompat="@android:drawable/gallery_thumb" />
 
         <ImageView
             android:id="@+id/DiceThree"
-            android:layout_width="55dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginLeft="4dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:background="@color/white"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:focusable="true"
             android:clickable="true"
-            android:cropToPadding="true"
-            android:padding="3dp"
+            android:clipToOutline="true"
             app:srcCompat="@android:drawable/gallery_thumb" />
 
         <ImageView
             android:id="@+id/DiceFour"
-            android:layout_width="55dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginLeft="4dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:background="@color/white"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:focusable="true"
             android:clickable="true"
-            android:cropToPadding="true"
-            android:padding="3dp"
+            android:clipToOutline="true"
             app:srcCompat="@android:drawable/gallery_thumb" />
 
         <ImageView
             android:id="@+id/DiceFive"
-            android:layout_width="55dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginLeft="4dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
             android:adjustViewBounds="false"
-            android:background="@color/white"
+            android:focusable="true"
             android:clickable="true"
             android:longClickable="false"
-            android:padding="3dp"
             app:srcCompat="@android:drawable/gallery_thumb" />
 
     </LinearLayout>
@@ -231,37 +220,34 @@
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="4dp"
             android:layout_marginTop="4dp"
             android:layout_weight="1"
             android:shadowColor="#453F3F"
             android:text="Number 1: "
             android:textColor="#120D0D"
-            android:textSize="16sp"
+            android:textSize="20sp"
             android:visibility="visible" />
 
         <ImageView
             android:id="@+id/numOneOne"
             android:layout_width="30dp"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_marginStart="20dp"
             android:layout_marginLeft="20dp"
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
-            android:layout_weight="1"
-            android:adjustViewBounds="false"
-            android:padding="3dp"
             android:tag="0"
             app:srcCompat="@android:drawable/gallery_thumb" />
 
         <ImageView
             android:id="@+id/numOneTwo"
             android:layout_width="30dp"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_marginStart="2dp"
             android:layout_marginLeft="2dp"
             android:layout_marginEnd="2dp"
             android:layout_marginRight="2dp"
-            android:padding="3dp"
             android:tag="0"
             app:srcCompat="@android:drawable/gallery_thumb" />
 
@@ -269,25 +255,24 @@
             android:id="@+id/textChoseOne"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginLeft="4dp"
             android:layout_marginTop="4dp"
             android:layout_weight="1"
+            android:textSize="20sp"
             android:text="0"
             android:textColor="@color/black"
             android:visibility="visible" />
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/LayoutScoreArea"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/LayoutRolledDices"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.514">
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:id="@+id/LayoutText"
