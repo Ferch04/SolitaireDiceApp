@@ -41,7 +41,7 @@
             android:layout_marginLeft="9dp"
             android:layout_weight="1"
             android:clipToOutline="true"
-            android:tag="0"
+            android:tag="@string/_0"
             app:srcCompat="@android:drawable/gallery_thumb" />
 
     </LinearLayout>
@@ -79,7 +79,7 @@
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
             android:clipToOutline="true"
-            android:tag="0"
+            android:tag="@string/_0"
             app:srcCompat="@android:drawable/gallery_thumb" />
 
         <ImageView
@@ -91,7 +91,7 @@
             android:layout_marginEnd="2dp"
             android:layout_marginRight="2dp"
             android:clipToOutline="true"
-            android:tag="0"
+            android:tag="@string/_0"
             app:srcCompat="@android:drawable/gallery_thumb" />
 
         <TextView
@@ -102,7 +102,7 @@
             android:layout_marginLeft="4dp"
             android:layout_marginTop="4dp"
             android:layout_weight="1"
-            android:text="0"
+            android:text="@string/_0"
             android:textSize="20sp"
             android:textColor="@color/black" />
     </LinearLayout>
@@ -237,7 +237,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
-            android:tag="0"
+            android:tag="@string/_0"
             app:srcCompat="@android:drawable/gallery_thumb" />
 
         <ImageView
@@ -248,7 +248,7 @@
             android:layout_marginLeft="2dp"
             android:layout_marginEnd="2dp"
             android:layout_marginRight="2dp"
-            android:tag="0"
+            android:tag="@string/_0"
             app:srcCompat="@android:drawable/gallery_thumb" />
 
         <TextView
@@ -260,7 +260,7 @@
             android:layout_marginTop="4dp"
             android:layout_weight="1"
             android:textSize="20sp"
-            android:text="0"
+            android:text="@string/_0"
             android:textColor="@color/black"
             android:visibility="visible" />
     </LinearLayout>
@@ -435,7 +435,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
-                android:text="0"
+                android:text="@string/_0"
                 android:textColor="@color/gray_99"
                 android:textSize="20sp" />
 
@@ -445,7 +445,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
-                android:text="0"
+                android:text="@string/_0"
                 android:textColor="@color/gray_99"
                 android:textSize="20sp" />
 
@@ -455,7 +455,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
-                android:text="0"
+                android:text="@string/_0"
                 android:textColor="@color/gray_99"
                 android:textSize="20sp" />
 
@@ -465,7 +465,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
-                android:text="0"
+                android:text="@string/_0"
                 android:textColor="@color/gray_99"
                 android:textSize="20sp" />
 
@@ -475,7 +475,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
-                android:text="0"
+                android:text="@string/_0"
                 android:textColor="@color/gray_99"
                 android:textSize="20sp" />
 
@@ -485,7 +485,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
-                android:text="0"
+                android:text="@string/_0"
                 android:textColor="@color/gray_99"
                 android:textSize="20sp" />
 
@@ -495,7 +495,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
-                android:text="0"
+                android:text="@string/_0"
                 android:textColor="@color/gray_99"
                 android:textSize="20sp" />
 
@@ -505,7 +505,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
-                android:text="0"
+                android:text="@string/_0"
                 android:textColor="@color/gray_99"
                 android:textSize="20sp" />
 
@@ -515,7 +515,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
-                android:text="0"
+                android:text="@string/_0"
                 android:textColor="@color/gray_99"
                 android:textSize="20sp" />
 
@@ -525,7 +525,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
-                android:text="0"
+                android:text="@string/_0"
                 android:textColor="@color/gray_99"
                 android:textSize="20sp" />
 
@@ -534,7 +534,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="0"
+                android:text="@string/_0"
                 android:textColor="@color/gray_99"
                 android:textSize="20sp" />
 
@@ -599,7 +599,7 @@
                         android:id="@+id/count_score"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="0"
+                        android:text="@string/_0"
                         android:textSize="20sp" />
                 </LinearLayout>
                 <LinearLayout

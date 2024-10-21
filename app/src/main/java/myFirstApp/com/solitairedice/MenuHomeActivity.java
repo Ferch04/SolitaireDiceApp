@@ -21,10 +21,10 @@ public class MenuHomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_home_activity);
 
-        bOnePlayer = (Button)findViewById(R.id.onePlayer);
+        bOnePlayer = findViewById(R.id.onePlayer);
         bOnePlayer.setOnClickListener(view -> OnePlayer());
 
-        bTwoPlayers = (Button)findViewById(R.id.multiPlayers);
+        bTwoPlayers = findViewById(R.id.multiPlayers);
         bTwoPlayers.setOnClickListener(view -> TwoPlayers());
     }
     private void OnePlayer() {
