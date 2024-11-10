@@ -10,6 +10,7 @@ import android.text.Html;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
@@ -141,20 +142,47 @@ public class SolitaireWindow{
             imDice.setImageResource(dices[randDice]);
             imDice.setBackground(white);
             imDice.setTag(randDice + 1);
+            imDice.setEnabled(true);
         }
         IsFreeThrow(aDicesInt, score);
     }
     public void IsFreeThrow(List<Integer> iDices, Scoring score){
         boolean throwFounded = false;
+        List<Integer> uniqueThrowAways
+                = new ArrayList<>();
 
         if(score.state == Scoring.ScoreState.ThreeThrowAway){
             for(int dice : iDices){
-                throwFounded |= score.IsThrowAway(dice);
+                if(score.IsThrowAway(dice)) {
+                    if(!uniqueThrowAways.contains(dice)){
+                        uniqueThrowAways.add(dice);
+                    }
+                    throwFounded = true;
+                }
             }
             // if at lease on throw away its founded
             // free throw should be false, otherwise it will be true
             if(!throwFounded) {
                 FreeThrowaway();
+            }
+            else {
+                if(uniqueThrowAways.size() == 1){
+                    SetOnlyValidThrowaway(uniqueThrowAways.get(0));
+                }
+            }
+        }
+    }
+    public void SetOnlyValidThrowaway(int diceTag){
+        aChosenDices[THROW_AWAY].setImageResource(dices[diceTag - 1]);
+        aChosenDices[THROW_AWAY].setTag(diceTag);
+        aChosenDices[THROW_AWAY].setBackground(backgroundBlack);
+        chosenDices++;
+
+        for(ImageView dice : aDices) {
+            if((Integer) dice.getTag() == diceTag){
+                dice.setEnabled(false);
+                dice.setBackground(backgroundBlack);
+                break;
             }
         }
     }
